@@ -15,6 +15,9 @@ import '../support/support_dashboard_view.dart';
 import '../onboarding/welcome_onboarding_view.dart';
 import '../onboarding/customer_onboarding_view.dart';
 import '../onboarding/trainer_onboarding_view.dart';
+import '../auth/trainer_auth_view.dart';
+import '../auth/admin_auth_view.dart';
+import '../auth/support_auth_view.dart';
 
 enum DeviceMode {
   fullWeb,
@@ -441,11 +444,17 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
     } else if (_selectedFlow == 'customer_dashboard') {
       return const CustomerDashboardView();
     } else if (_selectedFlow == 'trainer_dashboard') {
-      return const TrainerDashboardView();
+      return state.isTrainerRegistered
+          ? const TrainerDashboardView()
+          : TrainerAuthView(onAuthenticated: () => setState(() {}));
     } else if (_selectedFlow == 'admin_dashboard') {
-      return const AdminDashboardView();
+      return state.isAdminRegistered
+          ? const AdminDashboardView()
+          : AdminAuthView(onAuthenticated: () => setState(() {}));
     } else if (_selectedFlow == 'support_dashboard') {
-      return const SupportDashboardView();
+      return state.isSupportRegistered
+          ? const SupportDashboardView()
+          : SupportAuthView(onAuthenticated: () => setState(() {}));
     }
 
     // Default flow based on active role
@@ -453,11 +462,17 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
       case UserRole.customer:
         return widget.child;
       case UserRole.trainer:
-        return const TrainerDashboardView();
+        return state.isTrainerRegistered
+            ? const TrainerDashboardView()
+            : TrainerAuthView(onAuthenticated: () => setState(() {}));
       case UserRole.admin:
-        return const AdminDashboardView();
+        return state.isAdminRegistered
+            ? const AdminDashboardView()
+            : AdminAuthView(onAuthenticated: () => setState(() {}));
       case UserRole.support:
-        return const SupportDashboardView();
+        return state.isSupportRegistered
+            ? const SupportDashboardView()
+            : SupportAuthView(onAuthenticated: () => setState(() {}));
     }
   }
 }

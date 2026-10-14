@@ -9,6 +9,7 @@ import 'trainer_search_view.dart';
 import 'trainer_profile_view.dart';
 import '../onboarding/trainer_onboarding_view.dart';
 import '../onboarding/customer_onboarding_view.dart';
+import '../auth/customer_auth_dialog.dart';
 
 class LandingPage extends StatefulWidget {
   final VoidCallback onExploreClick;
@@ -63,6 +64,98 @@ class _LandingPageState extends State<LandingPage> {
     );
   }
 
+  Widget _buildTopGuestBanner(BuildContext context, AppState state, bool isDesktop) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E293B).withOpacity(0.95),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF334155)),
+      ),
+      child: Wrap(
+        alignment: WrapAlignment.spaceBetween,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 12,
+        runSpacing: 8,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                state.isCustomerRegistered ? Icons.verified_user : Icons.explore_outlined,
+                color: state.isCustomerRegistered ? AppColors.accent : AppColors.primaryLight,
+                size: 18,
+              ),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  state.isCustomerRegistered
+                      ? 'Logged in as ${state.currentUser.name} (+91 ${state.currentUser.phone})'
+                      : 'Guest Mode: Explore trainers, credentials & reviews freely. Registration required when booking.',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textDarkSecondary,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (!state.isCustomerRegistered)
+                ElevatedButton.icon(
+                  onPressed: () {
+                    CustomerAuthDialog.show(
+                      context,
+                      onSuccess: () => setState(() {}),
+                    );
+                  },
+                  icon: const Icon(Icons.login, size: 14),
+                  label: const Text('Sign In / Register', style: TextStyle(fontSize: 12)),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  ),
+                )
+              else
+                OutlinedButton.icon(
+                  onPressed: () {
+                    state.logoutCustomer();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Logged out of Customer account')),
+                    );
+                  },
+                  icon: const Icon(Icons.logout, size: 14, color: AppColors.error),
+                  label: const Text('Log Out', style: TextStyle(fontSize: 12, color: AppColors.error)),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    side: const BorderSide(color: AppColors.error),
+                  ),
+                ),
+              const SizedBox(width: 8),
+              OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const TrainerOnboardingView()),
+                  );
+                },
+                icon: const Icon(Icons.sports_gymnastics, size: 14, color: AppColors.accent),
+                label: const Text('Become a Trainer', style: TextStyle(fontSize: 12, color: AppColors.accent)),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  side: const BorderSide(color: AppColors.accent),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildHeroSection(BuildContext context, AppState state, bool isDesktop) {
     return Container(
       decoration: const BoxDecoration(
@@ -71,13 +164,17 @@ class _LandingPageState extends State<LandingPage> {
       ),
       padding: EdgeInsets.symmetric(
         horizontal: isDesktop ? 64 : 20,
-        vertical: isDesktop ? 60 : 36,
+        vertical: isDesktop ? 40 : 24,
       ),
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1100),
           child: Column(
             children: [
+              // Top Guest Banner & Registration Bar
+              _buildTopGuestBanner(context, state, isDesktop),
+              const SizedBox(height: 24),
+
               // Badge
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),

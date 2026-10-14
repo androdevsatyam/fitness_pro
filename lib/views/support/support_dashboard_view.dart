@@ -47,6 +47,17 @@ class _SupportDashboardViewState extends State<SupportDashboardView> {
               ],
             ),
           ),
+          IconButton(
+            icon: const Icon(Icons.logout, size: 20),
+            tooltip: 'Sign out of Support Console',
+            onPressed: () {
+              state.logoutSupport();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Logged out of Support Console')),
+              );
+            },
+          ),
+          const SizedBox(width: 8),
         ],
       ),
       body: Center(

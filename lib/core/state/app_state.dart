@@ -79,8 +79,100 @@ class AppState extends ChangeNotifier {
   String _selectedGender = 'All';
   String get selectedGender => _selectedGender;
 
+  // Authentication & Role-based Access Control
+  bool _isCustomerRegistered = false; // Guest exploration enabled; booking requires registration
+  bool get isCustomerRegistered => _isCustomerRegistered;
+
+  bool _isTrainerRegistered = false; // Trainer portal requires registration/verification
+  bool get isTrainerRegistered => _isTrainerRegistered;
+
+  bool _isAdminRegistered = false; // Admin dashboard requires admin authentication
+  bool get isAdminRegistered => _isAdminRegistered;
+
+  bool _isSupportRegistered = false; // Support console requires agent authentication
+  bool get isSupportRegistered => _isSupportRegistered;
+
   AppState() {
     _seedData();
+  }
+
+  void registerCustomer({
+    required String name,
+    required String phone,
+    String email = '',
+    String city = 'Bengaluru',
+    CustomerPreferences? preferences,
+  }) {
+    _currentUser = _currentUser.copyWith(
+      id: 'user_cust_${DateTime.now().millisecondsSinceEpoch}',
+      name: name,
+      phone: phone,
+      email: email.isNotEmpty ? email : '$phone@fitpro.in',
+      role: UserRole.customer,
+      city: city,
+      preferences: preferences ?? _currentUser.preferences,
+    );
+    _isCustomerRegistered = true;
+    notifyListeners();
+  }
+
+  void logoutCustomer() {
+    _isCustomerRegistered = false;
+    notifyListeners();
+  }
+
+  void loginTrainer({String emailOrPhone = 'priya.fitness@example.com'}) {
+    _isTrainerRegistered = true;
+    _currentUser = _currentUser.copyWith(
+      id: 'trainer_01',
+      name: 'Priya Nair',
+      role: UserRole.trainer,
+      phone: '9880198801',
+      email: emailOrPhone,
+      city: 'Bengaluru',
+    );
+    notifyListeners();
+  }
+
+  void logoutTrainer() {
+    _isTrainerRegistered = false;
+    notifyListeners();
+  }
+
+  void loginAdmin({String email = 'admin.ops@fitpro.in'}) {
+    _isAdminRegistered = true;
+    _currentUser = _currentUser.copyWith(
+      id: 'admin_01',
+      name: 'Vikram Malhotra',
+      role: UserRole.admin,
+      phone: '9811223344',
+      email: email,
+      city: 'Bengaluru',
+    );
+    notifyListeners();
+  }
+
+  void logoutAdmin() {
+    _isAdminRegistered = false;
+    notifyListeners();
+  }
+
+  void loginSupport({String email = 'neha.support@fitpro.in'}) {
+    _isSupportRegistered = true;
+    _currentUser = _currentUser.copyWith(
+      id: 'supp_01',
+      name: 'Neha Patel',
+      role: UserRole.support,
+      phone: '9922334455',
+      email: email,
+      city: 'Bengaluru',
+    );
+    notifyListeners();
+  }
+
+  void logoutSupport() {
+    _isSupportRegistered = false;
+    notifyListeners();
   }
 
   void setRole(UserRole role) {

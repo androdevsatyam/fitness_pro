@@ -10,6 +10,7 @@ import '../shared/chat_dialog.dart';
 import '../shared/review_dialog.dart';
 import '../shared/dispute_dialog.dart';
 import '../onboarding/customer_onboarding_view.dart';
+import '../auth/customer_auth_dialog.dart';
 
 class CustomerDashboardView extends StatefulWidget {
   const CustomerDashboardView({super.key});
@@ -74,6 +75,73 @@ class _CustomerDashboardViewState extends State<CustomerDashboardView> with Sing
           ],
         ),
         actions: [
+          if (!state.isCustomerRegistered)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  CustomerAuthDialog.show(
+                    context,
+                    onSuccess: () => setState(() {}),
+                  );
+                },
+                icon: const Icon(Icons.login, size: 16),
+                label: const Text('Sign In / Register', style: TextStyle(fontSize: 12)),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                ),
+              ),
+            )
+          else
+            PopupMenuButton<String>(
+              tooltip: 'Account Menu',
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 14,
+                      backgroundColor: AppColors.primary,
+                      child: Text(
+                        state.currentUser.name.isNotEmpty ? state.currentUser.name[0] : 'U',
+                        style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      state.currentUser.name,
+                      style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                    const Icon(Icons.arrow_drop_down, color: AppColors.textDarkMuted, size: 18),
+                  ],
+                ),
+              ),
+              onSelected: (val) {
+                if (val == 'logout') {
+                  state.logoutCustomer();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Logged out of Customer account')),
+                  );
+                }
+              },
+              itemBuilder: (_) => [
+                PopupMenuItem(
+                  enabled: false,
+                  child: Text('📱 +91 ${state.currentUser.phone}', style: const TextStyle(fontSize: 12, color: AppColors.textDarkMuted)),
+                ),
+                const PopupMenuDivider(),
+                const PopupMenuItem(
+                  value: 'logout',
+                  child: Row(
+                    children: [
+                      Icon(Icons.logout, size: 16, color: AppColors.error),
+                      SizedBox(width: 8),
+                      Text('Log Out', style: TextStyle(color: AppColors.error)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           IconButton(
             icon: const Icon(Icons.search),
             tooltip: 'Find new trainers',
@@ -84,6 +152,7 @@ class _CustomerDashboardViewState extends State<CustomerDashboardView> with Sing
               );
             },
           ),
+          const SizedBox(width: 8),
         ],
       ),
       body: Center(
@@ -109,43 +178,96 @@ class _CustomerDashboardViewState extends State<CustomerDashboardView> with Sing
   }
 
   Widget _buildUpcomingTab(BuildContext context, AppState state, List<BookingModel> bookings) {
-    if (bookings.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.event_available, size: 64, color: AppColors.textDarkMuted),
-            const SizedBox(height: 16),
-            const Text(
-              'No upcoming workout sessions scheduled',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+    return ListView(
+      children: [
+        if (!state.isCustomerRegistered)
+          Container(
+            margin: const EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1E293B),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: AppColors.primary.withOpacity(0.4)),
             ),
-            const SizedBox(height: 8),
-            const Text(
-              'Find a verified freelance trainer near your locality and book a slot today.',
-              style: TextStyle(color: AppColors.textDarkSecondary, fontSize: 13),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.info_outline, color: AppColors.primaryLight, size: 20),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Exploring FitPro India as Guest',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                      const SizedBox(height: 2),
+                      const Text(
+                        'You can freely search local trainers and inspect certificates without registering. Registration is required once you book a workout session.',
+                        style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton(
+                  onPressed: () {
+                    CustomerAuthDialog.show(
+                      context,
+                      onSuccess: () => setState(() {}),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    textStyle: const TextStyle(fontSize: 12),
+                  ),
+                  child: const Text('Register Now'),
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const TrainerSearchView()),
-                );
-              },
-              child: const Text('Discover Local Trainers'),
+          ),
+        if (bookings.isEmpty)
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 40),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.event_available, size: 64, color: AppColors.textDarkMuted),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'No upcoming workout sessions scheduled',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Find a verified freelance trainer near your locality and book a slot today.',
+                    style: TextStyle(color: AppColors.textDarkSecondary, fontSize: 13),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const TrainerSearchView()),
+                      );
+                    },
+                    child: const Text('Discover Local Trainers'),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      );
-    }
-
-    return ListView.builder(
-      itemCount: bookings.length,
-      itemBuilder: (context, idx) {
-        final b = bookings[idx];
-        return _buildBookingCard(context, state, b, isUpcoming: true);
-      },
+          )
+        else
+          ...bookings.map((b) => _buildBookingCard(context, state, b, isUpcoming: true)),
+      ],
     );
   }
 

@@ -118,10 +118,10 @@ class RoleSwitcherBar extends StatelessWidget {
                               dropdownColor: AppColors.surfaceDark,
                               icon: const Icon(Icons.arrow_drop_down, color: AppColors.primaryLight, size: 18),
                               items: [
-                                _roleItem(UserRole.customer, Icons.person_outline, 'Customer (Aarav)'),
-                                _roleItem(UserRole.trainer, Icons.sports_gymnastics, 'Trainer (Priya - ACE)'),
-                                _roleItem(UserRole.admin, Icons.admin_panel_settings, 'Admin (Vikram)'),
-                                _roleItem(UserRole.support, Icons.support_agent, 'Support (Neha)'),
+                                _roleItem(UserRole.customer, Icons.person_outline, state.isCustomerRegistered ? 'Customer (Registered)' : 'Customer (Guest Mode)'),
+                                _roleItem(UserRole.trainer, Icons.sports_gymnastics, state.isTrainerRegistered ? 'Trainer Pro (Logged In)' : 'Trainer Pro (Locked 🔒)'),
+                                _roleItem(UserRole.admin, Icons.admin_panel_settings, state.isAdminRegistered ? 'Admin Ops (Logged In)' : 'Admin Ops (Locked 🔒)'),
+                                _roleItem(UserRole.support, Icons.support_agent, state.isSupportRegistered ? 'Support Agent (Logged In)' : 'Support Agent (Locked 🔒)'),
                               ],
                               onChanged: (role) {
                                 if (role != null) {
@@ -131,6 +131,32 @@ class RoleSwitcherBar extends StatelessWidget {
                             ),
                           ),
                         ),
+                        if (!isCompact) ...[
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: _getAuthColor(state).withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(color: _getAuthColor(state).withOpacity(0.4)),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(_getAuthIcon(state), size: 12, color: _getAuthColor(state)),
+                                const SizedBox(width: 4),
+                                Text(
+                                  _getAuthStatusText(state),
+                                  style: TextStyle(
+                                    color: _getAuthColor(state),
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ],
@@ -141,6 +167,45 @@ class RoleSwitcherBar extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Color _getAuthColor(AppState state) {
+    switch (state.currentRole) {
+      case UserRole.customer:
+        return state.isCustomerRegistered ? AppColors.accent : AppColors.primaryLight;
+      case UserRole.trainer:
+        return state.isTrainerRegistered ? AppColors.accent : AppColors.warning;
+      case UserRole.admin:
+        return state.isAdminRegistered ? AppColors.accent : AppColors.error;
+      case UserRole.support:
+        return state.isSupportRegistered ? AppColors.accent : AppColors.warning;
+    }
+  }
+
+  IconData _getAuthIcon(AppState state) {
+    switch (state.currentRole) {
+      case UserRole.customer:
+        return state.isCustomerRegistered ? Icons.check_circle_outline : Icons.explore_outlined;
+      case UserRole.trainer:
+        return state.isTrainerRegistered ? Icons.verified : Icons.lock_outline;
+      case UserRole.admin:
+        return state.isAdminRegistered ? Icons.admin_panel_settings : Icons.lock_outline;
+      case UserRole.support:
+        return state.isSupportRegistered ? Icons.headset_mic : Icons.lock_outline;
+    }
+  }
+
+  String _getAuthStatusText(AppState state) {
+    switch (state.currentRole) {
+      case UserRole.customer:
+        return state.isCustomerRegistered ? 'Registered User' : 'Guest (Free Browse)';
+      case UserRole.trainer:
+        return state.isTrainerRegistered ? 'Trainer Active' : 'Login Required';
+      case UserRole.admin:
+        return state.isAdminRegistered ? 'Admin Console' : 'Restricted (Login Req)';
+      case UserRole.support:
+        return state.isSupportRegistered ? 'Support Active' : 'Login Required';
+    }
   }
 
   DropdownMenuItem<UserRole> _roleItem(UserRole role, IconData icon, String label) {

@@ -7,10 +7,42 @@ import '../../core/utils/formatters.dart';
 import '../../core/models/trainer_model.dart';
 import '../../core/models/review_model.dart';
 import '../booking/booking_flow_view.dart';
+import '../auth/customer_auth_dialog.dart';
 
 class TrainerProfileView extends StatelessWidget {
   final TrainerModel trainer;
   const TrainerProfileView({super.key, required this.trainer});
+
+  void _startBooking(BuildContext context, ServiceOffering service) {
+    final state = context.read<AppState>();
+    if (!state.isCustomerRegistered) {
+      CustomerAuthDialog.show(
+        context,
+        trainerName: trainer.name,
+        onSuccess: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => BookingFlowView(
+                trainer: trainer,
+                service: service,
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => BookingFlowView(
+            trainer: trainer,
+            service: service,
+          ),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,15 +149,7 @@ class TrainerProfileView extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {
                         if (trainer.services.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => BookingFlowView(
-                                trainer: trainer,
-                                service: trainer.services.first,
-                              ),
-                            ),
-                          );
+                          _startBooking(context, trainer.services.first);
                         }
                       },
                       child: const Text('Book Session Now'),
@@ -462,17 +486,7 @@ class TrainerProfileView extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerRight,
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => BookingFlowView(
-                                  trainer: trainer,
-                                  service: srv,
-                                ),
-                              ),
-                            );
-                          },
+                          onPressed: () => _startBooking(context, srv),
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                           ),
@@ -691,15 +705,7 @@ class TrainerProfileView extends StatelessWidget {
               child: ElevatedButton.icon(
                 onPressed: () {
                   if (firstService != null) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => BookingFlowView(
-                          trainer: trainer,
-                          service: firstService,
-                        ),
-                      ),
-                    );
+                    _startBooking(context, firstService);
                   }
                 },
                 icon: const Icon(Icons.calendar_month),

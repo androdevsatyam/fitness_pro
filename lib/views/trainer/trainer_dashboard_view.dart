@@ -107,6 +107,16 @@ class _TrainerDashboardViewState extends State<TrainerDashboardView> with Single
               ),
             ],
           ),
+          IconButton(
+            icon: const Icon(Icons.logout, size: 20),
+            tooltip: 'Sign out of Trainer Portal',
+            onPressed: () {
+              state.logoutTrainer();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Logged out of Trainer Portal')),
+              );
+            },
+          ),
           const SizedBox(width: 8),
         ],
         bottom: TabBar(

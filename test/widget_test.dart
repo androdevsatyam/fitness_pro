@@ -112,6 +112,53 @@ void main() {
       state.addReview(newReview);
       expect(state.reviews.any((r) => r.id == 'rev_test_01'), true);
     });
+
+    test('Guest exploration allows browsing without registration; registration updates customer state', () {
+      final state = AppState();
+      // Guest exploration by default
+      expect(state.isCustomerRegistered, false);
+      expect(state.trainers.isNotEmpty, true);
+
+      // Register customer (e.g. triggered when initiating booking)
+      state.registerCustomer(
+        name: 'Rohan Verma',
+        phone: '9876543210',
+        city: 'Bengaluru',
+      );
+      expect(state.isCustomerRegistered, true);
+      expect(state.currentUser.name, 'Rohan Verma');
+      expect(state.currentUser.phone, '9876543210');
+
+      // Logout reverts to guest mode
+      state.logoutCustomer();
+      expect(state.isCustomerRegistered, false);
+    });
+
+    test('Trainer, Admin and Support portals enforce authentication gates', () {
+      final state = AppState();
+      // Initially not authenticated
+      expect(state.isTrainerRegistered, false);
+      expect(state.isAdminRegistered, false);
+      expect(state.isSupportRegistered, false);
+
+      // Trainer authentication cycle
+      state.loginTrainer(emailOrPhone: 'priya.trainer@fitpro.in');
+      expect(state.isTrainerRegistered, true);
+      state.logoutTrainer();
+      expect(state.isTrainerRegistered, false);
+
+      // Admin authentication cycle
+      state.loginAdmin(email: 'admin.ops@fitpro.in');
+      expect(state.isAdminRegistered, true);
+      state.logoutAdmin();
+      expect(state.isAdminRegistered, false);
+
+      // Support authentication cycle
+      state.loginSupport(email: 'neha.support@fitpro.in');
+      expect(state.isSupportRegistered, true);
+      state.logoutSupport();
+      expect(state.isSupportRegistered, false);
+    });
   });
 
   group('UI Role Switcher Widget Test', () {

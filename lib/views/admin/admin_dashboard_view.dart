@@ -44,6 +44,19 @@ class _AdminDashboardViewState extends State<AdminDashboardView> with SingleTick
     return Scaffold(
       appBar: AppBar(
         title: const Text('FitPro Platform Administration'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, size: 20),
+            tooltip: 'Sign out of Admin Console',
+            onPressed: () {
+              state.logoutAdmin();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Logged out of Admin Console')),
+              );
+            },
+          ),
+          const SizedBox(width: 8),
+        ],
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: AppColors.primary,

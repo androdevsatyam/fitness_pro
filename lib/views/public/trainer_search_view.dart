@@ -7,6 +7,7 @@ import '../../core/utils/formatters.dart';
 import '../../core/models/trainer_model.dart';
 import 'trainer_profile_view.dart';
 import '../booking/booking_flow_view.dart';
+import '../auth/customer_auth_dialog.dart';
 
 class TrainerSearchView extends StatefulWidget {
   const TrainerSearchView({super.key});
@@ -26,10 +27,36 @@ class _TrainerSearchViewState extends State<TrainerSearchView> {
     _searchCtrl.text = state.searchQuery;
   }
 
-  @override
-  void dispose() {
-    _searchCtrl.dispose();
-    super.dispose();
+  void _bookTrainer(TrainerModel trainer) {
+    if (trainer.services.isEmpty) return;
+    final state = context.read<AppState>();
+    if (!state.isCustomerRegistered) {
+      CustomerAuthDialog.show(
+        context,
+        trainerName: trainer.name,
+        onSuccess: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => BookingFlowView(
+                trainer: trainer,
+                service: trainer.services.first,
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => BookingFlowView(
+            trainer: trainer,
+            service: trainer.services.first,
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -438,19 +465,7 @@ class _TrainerSearchViewState extends State<TrainerSearchView> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
-                if (trainer.services.isNotEmpty) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => BookingFlowView(
-                        trainer: trainer,
-                        service: trainer.services.first,
-                      ),
-                    ),
-                  );
-                }
-              },
+              onPressed: () => _bookTrainer(trainer),
               child: const Text('Book Session'),
             ),
           ),
@@ -502,19 +517,7 @@ class _TrainerSearchViewState extends State<TrainerSearchView> {
         ),
         const SizedBox(width: 8),
         ElevatedButton(
-          onPressed: () {
-            if (trainer.services.isNotEmpty) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => BookingFlowView(
-                    trainer: trainer,
-                    service: trainer.services.first,
-                  ),
-                ),
-              );
-            }
-          },
+          onPressed: () => _bookTrainer(trainer),
           child: const Text('Book Now'),
         ),
       ],

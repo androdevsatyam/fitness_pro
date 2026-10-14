@@ -14,6 +14,9 @@ import 'views/trainer/trainer_dashboard_view.dart';
 import 'views/admin/admin_dashboard_view.dart';
 import 'views/support/support_dashboard_view.dart';
 import 'views/onboarding/welcome_onboarding_view.dart';
+import 'views/auth/trainer_auth_view.dart';
+import 'views/auth/admin_auth_view.dart';
+import 'views/auth/support_auth_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -103,15 +106,22 @@ class _MainShellState extends State<MainShell> {
   }
 
   Widget _buildRoleView(UserRole role) {
+    final state = context.watch<AppState>();
     switch (role) {
       case UserRole.customer:
         return _buildCustomerFlow();
       case UserRole.trainer:
-        return const TrainerDashboardView();
+        return state.isTrainerRegistered
+            ? const TrainerDashboardView()
+            : TrainerAuthView(onAuthenticated: () => setState(() {}));
       case UserRole.admin:
-        return const AdminDashboardView();
+        return state.isAdminRegistered
+            ? const AdminDashboardView()
+            : AdminAuthView(onAuthenticated: () => setState(() {}));
       case UserRole.support:
-        return const SupportDashboardView();
+        return state.isSupportRegistered
+            ? const SupportDashboardView()
+            : SupportAuthView(onAuthenticated: () => setState(() {}));
     }
   }
 
