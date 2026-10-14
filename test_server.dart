@@ -42,12 +42,18 @@ void main() async {
 
       request.response.headers.add('Content-Type', contentType);
       request.response.headers.add('Access-Control-Allow-Origin', '*');
-      await request.response.addStream(file.openRead());
-      await request.response.close();
+      if (request.method == 'HEAD') {
+        await request.response.close();
+      } else {
+        await request.response.addStream(file.openRead());
+        await request.response.close();
+      }
     } catch (e) {
-      request.response.statusCode = HttpStatus.internalServerError;
-      request.response.write('Server Error: $e');
-      await request.response.close();
+      try {
+        request.response.statusCode = HttpStatus.internalServerError;
+        request.response.write('Server Error: $e');
+        await request.response.close();
+      } catch (_) {}
     }
   }
 }
