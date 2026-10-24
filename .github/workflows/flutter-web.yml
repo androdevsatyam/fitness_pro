@@ -1,4 +1,4 @@
-﻿name: Flutter web CI and Firebase CD
+name: Flutter web CI and Firebase CD
 
 on:
   pull_request:
@@ -69,15 +69,15 @@ jobs:
           path: build/web
       - name: Check deployment credentials
         env:
-          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_AS_SMS }}
         run: |
           if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then
-            echo 'Add the FIREBASE_SERVICE_ACCOUNT Actions secret before enabling deployment.'
+            echo 'Add the FIREBASE_SERVICE_ACCOUNT_AS_SMS Actions secret before enabling deployment.'
             exit 1
           fi
       - name: Deploy tested artifact to the live channel
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_AS_SMS }}
           projectId: ${{ vars.FIREBASE_PROJECT_ID }}
           channelId: live

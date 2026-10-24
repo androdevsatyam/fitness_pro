@@ -1,4 +1,4 @@
-﻿# Flutter web CI/CD with Firebase Hosting
+# Flutter web CI/CD with Firebase Hosting
 
 ## What is prepared
 
@@ -13,12 +13,12 @@ Firebase deployment is skipped until the `FIREBASE_PROJECT_ID` repository variab
 1. Create or select a Firebase project in the Firebase console. Use **Hosting**, which supports static Flutter web output. Keep the Spark plan for a strictly free pilot.
 2. Set up its default Hosting site. Firebase supplies `PROJECT_ID.web.app` and `PROJECT_ID.firebaseapp.com` addresses with HTTPS; buying a domain is optional.
 3. Use the official Firebase CLI GitHub setup (`firebase init hosting:github`) to generate an account with Hosting deployment permissions and securely store its credential in GitHub. Keep this repository's existing workflow and `firebase.json`; do not replace them with the generated JavaScript-oriented build steps. Do not send credential JSON in chat or commit it.
-4. In GitHub repository **Settings → Secrets and variables → Actions**, store the generated credential JSON in a secret named `FIREBASE_SERVICE_ACCOUNT`. The CLI normally chooses a project-specific secret name; use that value under this workflow's expected name, or update the workflow to reference the generated name.
+4. In GitHub repository **Settings → Secrets and variables → Actions**, store the generated credential JSON in a secret named `FIREBASE_SERVICE_ACCOUNT_AS_SMS`. The CLI normally chooses a project-specific secret name; use that value under this workflow's expected name (FIREBASE_SERVICE_ACCOUNT_AS_SMS), or update the workflow to reference the generated name.
 5. Set the repository Actions variable `FIREBASE_PROJECT_ID` to the actual Firebase project ID, after the secret is ready.
 6. Create the `firebase-production` GitHub environment if desired and add any required deployment reviewers. Credentials may instead be stored as a secret in that environment.
 7. Push to `main`, or run **Flutter web CI and Firebase CD** manually from `main` with the deploy checkbox selected.
 
-No Firebase project, credentials, billing changes, or live deployment are created by these local configuration files. Your Firebase project ID is still needed to complete the setup.
+No Firebase project, credentials, billing changes, or live deployment are created by these local configuration files. The CLI has now selected `as-sms`; configure the GitHub repository variable as described below to activate deployment.
 
 ## Local deploy after setup
 
@@ -44,3 +44,9 @@ Checked against Firebase documentation on 24 October 2026:
 Hosting quota covers static delivery only. SMS authentication, backend services, a purchased domain, and GitHub Actions usage have separate limits or charges. The second deployment target has not been specified yet, so no Android/iOS/backend publishing workflow is assumed.
 
 References: [Hosting quotas](https://firebase.google.com/docs/hosting/usage-quotas-pricing), [Firebase pricing](https://firebase.google.com/pricing), [GitHub integration](https://firebase.google.com/docs/hosting/github-integration).
+
+## Initialized project
+
+The Firebase CLI selected project `as-sms` (alias `sahisehat`). The main workflow references the CLI-generated GitHub secret `FIREBASE_SERVICE_ACCOUNT_AS_SMS`; the CLI normally uploads it during initialization, so check GitHub before creating a second secret. Set the **repository Actions variable** `FIREBASE_PROJECT_ID` to `as-sms` when you are ready to deploy.
+
+The generated PR workflow was removed because it tried to deploy `build/web` without building Flutter. The existing workflow builds and tests on PRs, and deploys only successful `main` builds after the project variable is configured. The dependency lockfile must be committed alongside these changes, because CI uses `flutter pub get --enforce-lockfile`.
