@@ -25,7 +25,8 @@ class SupportTicketModel {
   final String bookingId;
   final String customerName;
   final String trainerName;
-  final String category; // 'Trainer Late / No-show', 'Wrong Location', 'Refund Request', 'Safety Concern'
+  final String
+  category; // 'Trainer Late / No-show', 'Wrong Location', 'Refund Request', 'Safety Concern'
   final String description;
   final TicketPriority priority;
   final TicketStatus status;
@@ -75,4 +76,3 @@ class SupportTicketModel {
     );
   }
 }
-

@@ -19,9 +19,10 @@ class AppState extends ChangeNotifier {
     email: 'aarav.sharma@example.com',
     phone: '9845012345',
     role: UserRole.customer,
-    city: 'Bengaluru',
-    area: 'Indiranagar',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80',
+    city: 'Gurugram',
+    area: 'Sector 67',
+    avatarUrl:
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80',
     preferences: CustomerPreferences(
       primaryGoal: 'Fat Loss & Core Strength',
       trainingStyle: 'Functional & HIIT',
@@ -34,6 +35,7 @@ class AppState extends ChangeNotifier {
     ),
   );
   UserModel get currentUser => _currentUser;
+  UserModel? _customerSession;
 
   // Platform settings
   PlatformSettingsModel _platformSettings = const PlatformSettingsModel();
@@ -67,7 +69,7 @@ class AppState extends ChangeNotifier {
   String _searchQuery = '';
   String get searchQuery => _searchQuery;
 
-  String _selectedCity = 'Bengaluru';
+  String _selectedCity = 'Gurugram';
   String get selectedCity => _selectedCity;
 
   String _selectedCategory = 'All';
@@ -80,16 +82,20 @@ class AppState extends ChangeNotifier {
   String get selectedGender => _selectedGender;
 
   // Authentication & Role-based Access Control
-  bool _isCustomerRegistered = false; // Guest exploration enabled; booking requires registration
+  bool _isCustomerRegistered =
+      false; // Guest exploration enabled; booking requires registration
   bool get isCustomerRegistered => _isCustomerRegistered;
 
-  bool _isTrainerRegistered = false; // Trainer portal requires registration/verification
+  bool _isTrainerRegistered =
+      false; // Trainer portal requires registration/verification
   bool get isTrainerRegistered => _isTrainerRegistered;
 
-  bool _isAdminRegistered = false; // Admin dashboard requires admin authentication
+  bool _isAdminRegistered =
+      false; // Admin dashboard requires admin authentication
   bool get isAdminRegistered => _isAdminRegistered;
 
-  bool _isSupportRegistered = false; // Support console requires agent authentication
+  bool _isSupportRegistered =
+      false; // Support console requires agent authentication
   bool get isSupportRegistered => _isSupportRegistered;
 
   AppState() {
@@ -100,18 +106,19 @@ class AppState extends ChangeNotifier {
     required String name,
     required String phone,
     String email = '',
-    String city = 'Bengaluru',
+    String city = 'Gurugram',
     CustomerPreferences? preferences,
   }) {
     _currentUser = _currentUser.copyWith(
-      id: 'user_cust_${DateTime.now().millisecondsSinceEpoch}',
+      id: 'user_cust_$phone',
       name: name,
       phone: phone,
-      email: email.isNotEmpty ? email : '$phone@fitpro.in',
+      email: email.isNotEmpty ? email : '$phone@homefit.demo',
       role: UserRole.customer,
       city: city,
       preferences: preferences ?? _currentUser.preferences,
     );
+    _customerSession = _currentUser;
     _isCustomerRegistered = true;
     notifyListeners();
   }
@@ -129,7 +136,7 @@ class AppState extends ChangeNotifier {
       role: UserRole.trainer,
       phone: '9880198801',
       email: emailOrPhone,
-      city: 'Bengaluru',
+      city: 'Gurugram',
     );
     notifyListeners();
   }
@@ -139,7 +146,7 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void loginAdmin({String email = 'admin.ops@fitpro.in'}) {
+  void loginAdmin({String email = 'admin.ops@homefit.demo'}) {
     _isAdminRegistered = true;
     _currentUser = _currentUser.copyWith(
       id: 'admin_01',
@@ -147,7 +154,7 @@ class AppState extends ChangeNotifier {
       role: UserRole.admin,
       phone: '9811223344',
       email: email,
-      city: 'Bengaluru',
+      city: 'Gurugram',
     );
     notifyListeners();
   }
@@ -157,7 +164,7 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void loginSupport({String email = 'neha.support@fitpro.in'}) {
+  void loginSupport({String email = 'neha.support@homefit.demo'}) {
     _isSupportRegistered = true;
     _currentUser = _currentUser.copyWith(
       id: 'supp_01',
@@ -165,7 +172,7 @@ class AppState extends ChangeNotifier {
       role: UserRole.support,
       phone: '9922334455',
       email: email,
-      city: 'Bengaluru',
+      city: 'Gurugram',
     );
     notifyListeners();
   }
@@ -176,6 +183,7 @@ class AppState extends ChangeNotifier {
   }
 
   void setRole(UserRole role) {
+    if (_currentRole == UserRole.customer) _customerSession = _currentUser;
     _currentRole = role;
     switch (role) {
       case UserRole.customer:
@@ -185,7 +193,7 @@ class AppState extends ChangeNotifier {
           role: UserRole.customer,
           phone: '9845012345',
           email: 'aarav.sharma@example.com',
-          city: 'Bengaluru',
+          city: 'Gurugram',
         );
         break;
       case UserRole.trainer:
@@ -195,7 +203,7 @@ class AppState extends ChangeNotifier {
           role: UserRole.trainer,
           phone: '9880198801',
           email: 'priya.fitness@example.com',
-          city: 'Bengaluru',
+          city: 'Gurugram',
         );
         break;
       case UserRole.admin:
@@ -204,8 +212,8 @@ class AppState extends ChangeNotifier {
           name: 'Vikram Malhotra',
           role: UserRole.admin,
           phone: '9811223344',
-          email: 'admin.ops@fitpro.in',
-          city: 'Bengaluru',
+          email: 'admin.ops@homefit.demo',
+          city: 'Gurugram',
         );
         break;
       case UserRole.support:
@@ -214,11 +222,13 @@ class AppState extends ChangeNotifier {
           name: 'Neha Patel',
           role: UserRole.support,
           phone: '9922334455',
-          email: 'neha.support@fitpro.in',
-          city: 'Bengaluru',
+          email: 'neha.support@homefit.demo',
+          city: 'Gurugram',
         );
         break;
     }
+    if (role == UserRole.customer && _customerSession != null)
+      _currentUser = _customerSession!;
     notifyListeners();
   }
 
@@ -250,7 +260,8 @@ class AppState extends ChangeNotifier {
       // Query filter
       if (_searchQuery.isNotEmpty) {
         final q = _searchQuery.toLowerCase();
-        final match = t.name.toLowerCase().contains(q) ||
+        final match =
+            t.name.toLowerCase().contains(q) ||
             t.headline.toLowerCase().contains(q) ||
             t.serviceAreas.any((a) => a.toLowerCase().contains(q)) ||
             t.services.any((s) => s.category.toLowerCase().contains(q));
@@ -259,8 +270,9 @@ class AppState extends ChangeNotifier {
 
       // Category filter
       if (_selectedCategory != 'All') {
-        final matchesCat = t.services.any((s) =>
-            s.category.toLowerCase() == _selectedCategory.toLowerCase());
+        final matchesCat = t.services.any(
+          (s) => s.category.toLowerCase() == _selectedCategory.toLowerCase(),
+        );
         if (!matchesCat) return false;
       }
 
@@ -282,6 +294,61 @@ class AppState extends ChangeNotifier {
   }
 
   // --- Booking Operations ---
+  /// Phase-one adapter. Replace this boundary with POST /api/v1/bookings.
+  String? tryCreateBooking(BookingModel booking) {
+    if (!_isCustomerRegistered) return 'Please sign in before booking.';
+    if (booking.locationAddress.trim().length < 10) {
+      return 'Enter your complete training address.';
+    }
+    final trainer = _trainers
+        .where((t) => t.id == booking.trainerId)
+        .firstOrNull;
+    if (trainer == null ||
+        trainer.isProfilePaused ||
+        trainer.verificationStatus != VerificationStatus.approved) {
+      return 'This trainer is currently unavailable.';
+    }
+    final start = sessionStart(booking);
+    if (!start.isAfter(DateTime.now())) return 'Choose a future session.';
+    for (final existing in _bookings) {
+      if (existing.trainerId != booking.trainerId ||
+          [
+            BookingStatus.cancelled,
+            BookingStatus.refunded,
+            BookingStatus.completed,
+          ].contains(existing.status)) {
+        continue;
+      }
+      final other = sessionStart(existing);
+      // A static 30-minute travel buffer for this demo; routing comes in phase 2.
+      if (start.isBefore(
+            other.add(Duration(minutes: existing.durationMinutes + 30)),
+          ) &&
+          start
+              .add(Duration(minutes: booking.durationMinutes + 30))
+              .isAfter(other)) {
+        return 'This slot overlaps another session or its travel buffer. Choose another time.';
+      }
+    }
+    createBooking(booking);
+    return null;
+  }
+
+  DateTime sessionStart(BookingModel booking) {
+    final match = RegExp(
+      r'(\d{1,2}):(\d{2})\s*(AM|PM)',
+    ).firstMatch(booking.timeSlot);
+    if (match == null) return booking.scheduledDate;
+    final hour = int.parse(match[1]!) % 12 + (match[3] == 'PM' ? 12 : 0);
+    return DateTime(
+      booking.scheduledDate.year,
+      booking.scheduledDate.month,
+      booking.scheduledDate.day,
+      hour,
+      int.parse(match[2]!),
+    );
+  }
+
   void createBooking(BookingModel booking) {
     _bookings.insert(0, booking);
     // Initialize empty message thread
@@ -295,20 +362,28 @@ class AppState extends ChangeNotifier {
         timestamp: DateTime.now(),
         isFromCustomer: false,
         bookingId: booking.id,
-      )
+      ),
     ];
     notifyListeners();
   }
 
-  void updateBookingStatus(String bookingId, BookingStatus newStatus, {String? reason}) {
+  void updateBookingStatus(
+    String bookingId,
+    BookingStatus newStatus, {
+    String? reason,
+  }) {
     final index = _bookings.indexWhere((b) => b.id == bookingId);
     if (index != -1) {
       final current = _bookings[index];
       _bookings[index] = current.copyWith(
         status: newStatus,
         cancellationReason: reason ?? current.cancellationReason,
-        checkInTime: newStatus == BookingStatus.inProgress ? DateTime.now() : current.checkInTime,
-        completedTime: newStatus == BookingStatus.completed ? DateTime.now() : current.completedTime,
+        checkInTime: newStatus == BookingStatus.inProgress
+            ? DateTime.now()
+            : current.checkInTime,
+        completedTime: newStatus == BookingStatus.completed
+            ? DateTime.now()
+            : current.completedTime,
       );
       notifyListeners();
     }
@@ -322,7 +397,8 @@ class AppState extends ChangeNotifier {
     if (trainerIndex != -1) {
       final trainer = _trainers[trainerIndex];
       final newCount = trainer.reviewCount + 1;
-      final newRating = ((trainer.rating * trainer.reviewCount) + review.rating) / newCount;
+      final newRating =
+          ((trainer.rating * trainer.reviewCount) + review.rating) / newCount;
       _trainers[trainerIndex] = trainer.copyWith(
         rating: double.parse(newRating.toStringAsFixed(1)),
         reviewCount: newCount,
@@ -331,7 +407,9 @@ class AppState extends ChangeNotifier {
     // Mark booking as reviewed
     final bookingIndex = _bookings.indexWhere((b) => b.id == review.bookingId);
     if (bookingIndex != -1) {
-      _bookings[bookingIndex] = _bookings[bookingIndex].copyWith(isReviewed: true);
+      _bookings[bookingIndex] = _bookings[bookingIndex].copyWith(
+        isReviewed: true,
+      );
     }
     notifyListeners();
   }
@@ -354,17 +432,50 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  final Map<String, String> assessmentResults = {};
+
+  void saveAssessment(
+    String trainerId,
+    double dayOne,
+    double dayTwo,
+    bool safetyPassed,
+  ) {
+    final passed = dayOne >= 75 && dayTwo >= 75 && safetyPassed;
+    assessmentResults[trainerId] =
+        '${passed ? "Passed" : "Reassessment required"} | Day 1: ${dayOne.round()}% | Day 2: ${dayTwo.round()}% | Safety: ${safetyPassed ? "Passed" : "Failed"}';
+    updateTrainerVerification(
+      trainerId,
+      passed
+          ? VerificationStatus.approved
+          : VerificationStatus.changesRequested,
+    );
+  }
+
+  void updateTravelPreference(String trainerId, bool enabled) {
+    final index = _trainers.indexWhere((t) => t.id == trainerId);
+    if (index < 0) return;
+    _trainers[index] = _trainers[index].copyWith(openToLongDistance: enabled);
+    notifyListeners();
+  }
+
   // --- Admin Verification Operations ---
-  void updateTrainerVerification(String trainerId, VerificationStatus newStatus) {
+  void updateTrainerVerification(
+    String trainerId,
+    VerificationStatus newStatus,
+  ) {
     final index = _trainers.indexWhere((t) => t.id == trainerId);
     if (index != -1) {
-      _trainers[index] = _trainers[index].copyWith(verificationStatus: newStatus);
+      _trainers[index] = _trainers[index].copyWith(
+        verificationStatus: newStatus,
+      );
       notifyListeners();
     }
   }
 
   void updatePlatformCommission(double newPercent) {
-    _platformSettings = _platformSettings.copyWith(platformCommissionPercent: newPercent);
+    _platformSettings = _platformSettings.copyWith(
+      platformCommissionPercent: newPercent,
+    );
     notifyListeners();
   }
 
@@ -373,7 +484,11 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resolveDispute(String ticketId, String resolutionNotes, {bool issueRefund = false}) {
+  void resolveDispute(
+    String ticketId,
+    String resolutionNotes, {
+    bool issueRefund = false,
+  }) {
     final index = _supportTickets.indexWhere((t) => t.id == ticketId);
     if (index != -1) {
       final ticket = _supportTickets[index];
@@ -403,7 +518,9 @@ class AppState extends ChangeNotifier {
     final index = _trainers.indexWhere((t) => t.id == trainerId);
     if (index != -1) {
       final current = _trainers[index];
-      _trainers[index] = current.copyWith(isProfilePaused: !current.isProfilePaused);
+      _trainers[index] = current.copyWith(
+        isProfilePaused: !current.isProfilePaused,
+      );
       notifyListeners();
     }
   }
@@ -422,16 +539,21 @@ class AppState extends ChangeNotifier {
         name: 'Priya Nair',
         headline: 'ACE & K11 Certified Functional & Strength Coach',
         bio:
-            'Former athlete with 6+ years of personal coaching experience in Bengaluru. Specializing in sustainable fat loss, kettlebell conditioning, and posture correction for desk professionals. Provides all portable workout equipment at your doorstep.',
-        photoUrl: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400&q=80',
+            'Former athlete with 6+ years of personal coaching experience in Gurugram. Specializing in sustainable fat loss, kettlebell conditioning, and posture correction for desk professionals. Provides all portable workout equipment at your doorstep.',
+        photoUrl:
+            'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400&q=80',
         rating: 4.9,
         reviewCount: 42,
         experienceYears: 6,
         languages: ['English', 'Hindi', 'Kannada'],
-        city: 'Bengaluru',
-        serviceAreas: ['Indiranagar', 'Koramangala', 'HSR Layout', 'Domlur'],
+        city: 'Gurugram',
+        serviceAreas: ['Sector 67', 'Sector 55', 'Sector 42'],
         maxTravelRadiusKm: 8.0,
-        preferredTrainingLocations: ['Customer Home', 'Apartment Society Gym', 'Cubbon Park'],
+        preferredTrainingLocations: [
+          'Customer Home',
+          'Apartment Society Gym',
+          'Cubbon Park',
+        ],
         verificationStatus: VerificationStatus.approved,
         idVerified: true,
         gender: 'Female',
@@ -445,7 +567,7 @@ class AppState extends ChangeNotifier {
             issuingOrg: 'American Council on Exercise (ACE)',
             certNumber: 'ACE-IN-889124',
             issueDate: '2020-03-15',
-            expiryDate: '2026-03-15',
+            expiryDate: '2028-03-15',
             isVerified: true,
           ),
           Qualification(
@@ -462,19 +584,22 @@ class AppState extends ChangeNotifier {
           ServiceOffering(
             id: 'srv_1',
             title: '1-on-1 Functional & HIIT Training',
-            description: 'Customized bodyweight, resistance bands and kettlebell training targeted for fat loss and cardio endurance.',
+            description:
+                'Customized bodyweight, resistance bands and kettlebell training targeted for fat loss and cardio endurance.',
             category: 'Functional Training',
             durationMinutes: 60,
             priceInr: 1200,
             sessionType: '1-on-1 Personal',
-            equipmentProvided: 'Kettlebells (8/12kg), Resistance loop bands, Agility ladder',
+            equipmentProvided:
+                'Kettlebells (8/12kg), Resistance loop bands, Agility ladder',
             travelSurchargeInr: 100,
           ),
           ServiceOffering(
             id: 'srv_2',
             title: 'Core Strength & Posture Alignment',
-            description: 'Focus on thoracic mobility, glute activation and lower back relief for sedentary workers.',
-            category: 'Mobility & Rehab',
+            description:
+                'Focus on thoracic mobility, glute activation and lower back relief for sedentary workers.',
+            category: 'Stretching & Mobility',
             durationMinutes: 45,
             priceInr: 1000,
             sessionType: '1-on-1 Personal',
@@ -484,7 +609,8 @@ class AppState extends ChangeNotifier {
           ServiceOffering(
             id: 'srv_3',
             title: 'Partner / Small Group Conditioning (2-3 Pax)',
-            description: 'High energy partner workout for couples or apartment buddies looking to train together.',
+            description:
+                'High energy partner workout for couples or apartment buddies looking to train together.',
             category: 'Functional Training',
             durationMinutes: 60,
             priceInr: 1800,
@@ -500,15 +626,20 @@ class AppState extends ChangeNotifier {
         headline: 'Yoga Alliance 500-HR Registered & Ashtanga Master',
         bio:
             'Dedicated classical Hatha and Vinyasa instructor with 8 years of teaching across Mumbai and Pune. Works with beginners up to advanced practitioners with mindful breathwork (Pranayama) and restorative flexibility.',
-        photoUrl: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=80',
+        photoUrl:
+            'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&q=80',
         rating: 4.95,
         reviewCount: 68,
         experienceYears: 8,
         languages: ['English', 'Marathi', 'Hindi'],
-        city: 'Mumbai',
-        serviceAreas: ['Bandra West', 'Khar', 'Juhu', 'Santacruz'],
+        city: 'Gurugram',
+        serviceAreas: ['Sector 67', 'Sector 55', 'Sector 42'],
         maxTravelRadiusKm: 6.0,
-        preferredTrainingLocations: ['Customer Home', 'Carter Road Promenade', 'Society Clubhouse'],
+        preferredTrainingLocations: [
+          'Customer Home',
+          'Carter Road Promenade',
+          'Society Clubhouse',
+        ],
         verificationStatus: VerificationStatus.approved,
         idVerified: true,
         gender: 'Male',
@@ -530,7 +661,8 @@ class AppState extends ChangeNotifier {
           ServiceOffering(
             id: 'srv_4',
             title: 'Authentic Vinyasa Flow & Breathwork',
-            description: 'Dynamic sequencing designed to build lean core strength, improve flexibility, and release mental stress.',
+            description:
+                'Dynamic sequencing designed to build lean core strength, improve flexibility, and release mental stress.',
             category: 'Yoga & Mindfulness',
             durationMinutes: 60,
             priceInr: 1400,
@@ -541,7 +673,8 @@ class AppState extends ChangeNotifier {
           ServiceOffering(
             id: 'srv_5',
             title: 'Restorative Yoga for Senior Adults & Joint Care',
-            description: 'Gentle, therapeutic movements with chair modifications to protect knees, hips, and lower spine.',
+            description:
+                'Gentle, therapeutic movements with chair modifications to protect knees, hips, and lower spine.',
             category: 'Senior Fitness',
             durationMinutes: 45,
             priceInr: 1100,
@@ -554,16 +687,22 @@ class AppState extends ChangeNotifier {
       TrainerModel(
         id: 'trainer_03',
         name: 'Ananya Sengupta',
-        headline: 'Women\'s Pre/Postnatal & Strength Conditioning Specialist',
+        headline: 'Mat Pilates & Functional Movement Coach',
         bio:
             'Passionate advocate for women\'s health and safe weight lifting. Specially certified in diastasis recti recovery, pelvic floor strengthening, and progressive home calisthenics.',
-        photoUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80',
+        photoUrl:
+            'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80',
         rating: 4.88,
         reviewCount: 35,
         experienceYears: 5,
         languages: ['English', 'Hindi', 'Bengali'],
-        city: 'Bengaluru',
-        serviceAreas: ['Whitefield', 'Bellandur', 'Sarjapur Road', 'Marathahalli'],
+        city: 'Gurugram',
+        serviceAreas: [
+          'Sector 55',
+          'Bellandur',
+          'Sarjapur Road',
+          'Marathahalli',
+        ],
         maxTravelRadiusKm: 10.0,
         preferredTrainingLocations: ['Customer Home', 'Society Gym'],
         verificationStatus: VerificationStatus.approved,
@@ -586,13 +725,15 @@ class AppState extends ChangeNotifier {
         services: const [
           ServiceOffering(
             id: 'srv_6',
-            title: 'Women\'s Strength & Postnatal Rehabilitation',
-            description: 'Safe, empowering functional strength designed for postpartum recovery and long-term joint health.',
-            category: 'Women\'s Fitness',
+            title: 'Mat Pilates & Core Control',
+            description:
+                'Safe, empowering functional strength designed for postpartum recovery and long-term joint health.',
+            category: 'Mat Pilates',
             durationMinutes: 60,
             priceInr: 1500,
             sessionType: '1-on-1 Personal',
-            equipmentProvided: 'Adjustable dumbbells, hip bands, mini pilates ball',
+            equipmentProvided:
+                'Adjustable dumbbells, hip bands, mini pilates ball',
             travelSurchargeInr: 120,
           ),
         ],
@@ -603,15 +744,26 @@ class AppState extends ChangeNotifier {
         headline: 'ACSM Certified Bodyweight & Calisthenics Specialist',
         bio:
             'Calisthenics practitioner with 7 years of teaching experience. Master handstands, pull-up progressions, muscle-ups, and explosive body control without any gym machines.',
-        photoUrl: 'https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=400&q=80',
+        photoUrl:
+            'https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=400&q=80',
         rating: 4.85,
         reviewCount: 29,
         experienceYears: 7,
         languages: ['English', 'Hindi', 'Punjabi'],
-        city: 'Delhi NCR',
-        serviceAreas: ['Gurugram Cyber City', 'Golf Course Road', 'South Delhi', 'Saket'],
-        maxTravelRadiusKm: 12.0,
-        preferredTrainingLocations: ['Public Park', 'Society Clubhouse', 'Customer Home'],
+        city: 'Gurugram',
+        serviceAreas: [
+          'Gurugram Cyber City',
+          'Golf Course Road',
+          'South Delhi',
+          'Saket',
+        ],
+        maxTravelRadiusKm: 55.0,
+        openToLongDistance: true,
+        preferredTrainingLocations: [
+          'Public Park',
+          'Society Clubhouse',
+          'Customer Home',
+        ],
         verificationStatus: VerificationStatus.approved,
         idVerified: true,
         gender: 'Male',
@@ -625,7 +777,7 @@ class AppState extends ChangeNotifier {
             issuingOrg: 'American College of Sports Medicine (ACSM)',
             certNumber: 'ACSM-EP-1094',
             issueDate: '2019-11-05',
-            expiryDate: '2025-11-05',
+            expiryDate: '2028-11-05',
             isVerified: true,
           ),
         ],
@@ -633,7 +785,8 @@ class AppState extends ChangeNotifier {
           ServiceOffering(
             id: 'srv_7',
             title: 'Pure Calisthenics & Bodyweight Mastery',
-            description: 'Learn gymnastics body control, strict push/pull strength, and core compression right in your local park or living room.',
+            description:
+                'Learn gymnastics body control, strict push/pull strength, and core compression right in your local park or living room.',
             category: 'Calisthenics & Bodyweight',
             durationMinutes: 60,
             priceInr: 1300,
@@ -650,12 +803,13 @@ class AppState extends ChangeNotifier {
         headline: 'ISSA Certified Strength & Conditioning Coach',
         bio:
             'Strength coach specializing in athletic performance, speed, and agility for runners and corporate badminton players.',
-        photoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80',
+        photoUrl:
+            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80',
         rating: 0.0,
         reviewCount: 0,
         experienceYears: 4,
         languages: ['English', 'Hindi'],
-        city: 'Hyderabad',
+        city: 'Gurugram',
         serviceAreas: ['Gachibowli', 'Hitec City', 'Jubilee Hills'],
         maxTravelRadiusKm: 8.0,
         preferredTrainingLocations: ['Customer Home', 'Society Gym'],
@@ -673,7 +827,8 @@ class AppState extends ChangeNotifier {
             certNumber: 'ISSA-HYD-9982',
             issueDate: '2023-05-15',
             expiryDate: '2027-05-15',
-            documentUrl: 'https://fitpro-assets.s3.ap-south-1.amazonaws.com/certs/issa_devraj.pdf',
+            documentUrl:
+                'https://fitpro-assets.s3.ap-south-1.amazonaws.com/certs/issa_devraj.pdf',
             isVerified: false,
           ),
         ],
@@ -681,7 +836,8 @@ class AppState extends ChangeNotifier {
           ServiceOffering(
             id: 'srv_8',
             title: 'Athletic Conditioning & Agility',
-            description: 'Footwork, explosive jumping and core stability for weekend sports enthusiasts.',
+            description:
+                'Footwork, explosive jumping and core stability for weekend sports enthusiasts.',
             category: 'Functional Training',
             durationMinutes: 60,
             priceInr: 1100,
@@ -696,7 +852,8 @@ class AppState extends ChangeNotifier {
         id: 'BK_IND_8901',
         trainerId: 'trainer_01',
         trainerName: 'Priya Nair',
-        trainerPhoto: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400&q=80',
+        trainerPhoto:
+            'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400&q=80',
         customerId: 'user_cust_01',
         customerName: 'Aarav Sharma',
         customerPhone: '+91 9845012345',
@@ -705,7 +862,8 @@ class AppState extends ChangeNotifier {
         durationMinutes: 60,
         scheduledDate: DateTime.now().add(const Duration(days: 1)),
         timeSlot: '07:00 AM - 08:00 AM',
-        locationAddress: 'Flat 402, Prestige Palms, 12th Main Road, Indiranagar, Bengaluru',
+        locationAddress:
+            'Flat 402, Prestige Palms, 12th Main Road, Sector 67, Gurugram',
         locationType: 'Customer Home',
         price: const PriceBreakdown(
           basePrice: 1200,
@@ -724,16 +882,17 @@ class AppState extends ChangeNotifier {
         id: 'BK_IND_8902',
         trainerId: 'trainer_01',
         trainerName: 'Priya Nair',
-        trainerPhoto: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400&q=80',
+        trainerPhoto:
+            'https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400&q=80',
         customerId: 'user_cust_02',
         customerName: 'Kavita Sundaram',
         customerPhone: '+91 9811224466',
         serviceTitle: 'Core Strength & Posture Alignment',
-        serviceCategory: 'Mobility & Rehab',
+        serviceCategory: 'Stretching & Mobility',
         durationMinutes: 45,
         scheduledDate: DateTime.now().subtract(const Duration(days: 2)),
         timeSlot: '06:30 PM - 07:15 PM',
-        locationAddress: 'Villa 18, Palm Meadows, Whitefield, Bengaluru',
+        locationAddress: 'Villa 18, Palm Meadows, Sector 55, Gurugram',
         locationType: 'Society Clubhouse',
         price: const PriceBreakdown(
           basePrice: 1000,
@@ -754,7 +913,8 @@ class AppState extends ChangeNotifier {
         id: 'BK_IND_8903',
         trainerId: 'trainer_04',
         trainerName: 'Kabir Verma',
-        trainerPhoto: 'https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=400&q=80',
+        trainerPhoto:
+            'https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=400&q=80',
         customerId: 'user_cust_03',
         customerName: 'Sameer Sen',
         customerPhone: '+91 9922114433',
@@ -776,7 +936,8 @@ class AppState extends ChangeNotifier {
         status: BookingStatus.disputed,
         paymentMethod: 'UPI (Paytm)',
         paymentTransactionId: 'UPI_PAYTM_339182',
-        cancellationReason: 'Trainer arrived 45 minutes late due to traffic; session could not finish.',
+        cancellationReason:
+            'Trainer arrived 45 minutes late due to traffic; session could not finish.',
       ),
     ];
 
@@ -785,7 +946,8 @@ class AppState extends ChangeNotifier {
         id: 'rev_01',
         bookingId: 'BK_IND_8902',
         customerName: 'Kavita Sundaram',
-        customerPhoto: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80',
+        customerPhoto:
+            'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&q=80',
         trainerId: 'trainer_01',
         rating: 5.0,
         comment:
@@ -797,7 +959,8 @@ class AppState extends ChangeNotifier {
         id: 'rev_02',
         bookingId: 'BK_IND_7890',
         customerName: 'Aditya Rao',
-        customerPhoto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80',
+        customerPhoto:
+            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80',
         trainerId: 'trainer_01',
         rating: 4.8,
         comment:
@@ -809,7 +972,8 @@ class AppState extends ChangeNotifier {
         id: 'rev_03',
         bookingId: 'BK_IND_7761',
         customerName: 'Sunita Mehra',
-        customerPhoto: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80',
+        customerPhoto:
+            'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&q=80',
         trainerId: 'trainer_02',
         rating: 5.0,
         comment:
@@ -853,7 +1017,8 @@ class AppState extends ChangeNotifier {
         id: 'm1',
         senderId: 'trainer_01',
         senderName: 'Priya Nair',
-        text: 'Hi Aarav! Looking forward to our Functional HIIT session tomorrow at 7:00 AM at your flat in Indiranagar.',
+        text:
+            'Hi Aarav! Looking forward to our Functional HIIT session tomorrow at 7:00 AM at your flat in Sector 67.',
         timestamp: DateTime.now().subtract(const Duration(hours: 3)),
         isFromCustomer: false,
         bookingId: 'BK_IND_8901',
@@ -862,7 +1027,8 @@ class AppState extends ChangeNotifier {
         id: 'm2',
         senderId: 'user_cust_01',
         senderName: 'Aarav Sharma',
-        text: 'Hi Priya! Yes, looking forward. Please bring the 12kg kettlebells if possible. The security guard will buzz you up to flat 402.',
+        text:
+            'Hi Priya! Yes, looking forward. Please bring the 12kg kettlebells if possible. The security guard will buzz you up to flat 402.',
         timestamp: DateTime.now().subtract(const Duration(hours: 2)),
         isFromCustomer: true,
         bookingId: 'BK_IND_8901',
@@ -871,7 +1037,8 @@ class AppState extends ChangeNotifier {
         id: 'm3',
         senderId: 'trainer_01',
         senderName: 'Priya Nair',
-        text: 'Noted! I have the 12kg kettlebells, agility cones, and sanitised resistance bands packed. See you tomorrow at 7:00 AM sharp!',
+        text:
+            'Noted! I have the 12kg kettlebells, agility cones, and sanitised resistance bands packed. See you tomorrow at 7:00 AM sharp!',
         timestamp: DateTime.now().subtract(const Duration(hours: 1)),
         isFromCustomer: false,
         bookingId: 'BK_IND_8901',
@@ -879,4 +1046,3 @@ class AppState extends ChangeNotifier {
     ];
   }
 }
-

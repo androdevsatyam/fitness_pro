@@ -28,7 +28,8 @@ class PlatformSettingsModel {
   final List<PromoCode> promoCodes;
 
   const PlatformSettingsModel({
-    this.platformCommissionPercent = 12.0, // 12% configurable platform take rate
+    this.platformCommissionPercent =
+        12.0, // 12% configurable platform take rate
     this.baseTravelFeeInr = 100.0,
     this.gstPercent = 18.0,
     this.minNoticeHours = 2,
@@ -38,7 +39,8 @@ class PlatformSettingsModel {
         discountPercent: 20.0,
         maxDiscountInr: 300.0,
         minBookingAmountInr: 600.0,
-        description: '20% off up to ₹300 on your first personal training session',
+        description:
+            '20% off up to ₹300 on your first personal training session',
       ),
       PromoCode(
         code: 'HEALTHY10',
@@ -67,4 +69,3 @@ class PlatformSettingsModel {
     );
   }
 }
-

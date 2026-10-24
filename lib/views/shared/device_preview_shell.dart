@@ -58,7 +58,6 @@ class DevicePreviewShell extends StatefulWidget {
 class _DevicePreviewShellState extends State<DevicePreviewShell> {
   DeviceMode _deviceMode = DeviceMode.fullWeb;
   bool _isLandscape = false;
-  double _scale = 0.95;
 
   // Jump to specific flow shortcut
   String _selectedFlow = 'role_default';
@@ -66,7 +65,10 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
   @override
   Widget build(BuildContext context) {
     // If running on actual mobile device in native app, show direct UI
-    if (!kIsWeb && defaultTargetPlatform != TargetPlatform.windows && defaultTargetPlatform != TargetPlatform.macOS && defaultTargetPlatform != TargetPlatform.linux) {
+    if (!kIsWeb &&
+        defaultTargetPlatform != TargetPlatform.windows &&
+        defaultTargetPlatform != TargetPlatform.macOS &&
+        defaultTargetPlatform != TargetPlatform.linux) {
       return widget.child;
     }
 
@@ -95,7 +97,9 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: const BoxDecoration(
         color: Color(0xFF0F172A),
-        border: Border(bottom: BorderSide(color: Color(0xFF1E293B), width: 1.5)),
+        border: Border(
+          bottom: BorderSide(color: Color(0xFF1E293B), width: 1.5),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black45,
@@ -117,16 +121,33 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
                   gradient: AppColors.primaryGradient,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.fitness_center, color: Colors.white, size: 16),
+                child: const Icon(
+                  Icons.fitness_center,
+                  color: Colors.white,
+                  size: 16,
+                ),
               ),
               const SizedBox(width: 8),
               RichText(
                 text: const TextSpan(
                   style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   children: [
-                    TextSpan(text: 'FitPro', style: TextStyle(color: Colors.white)),
-                    TextSpan(text: ' India', style: TextStyle(color: AppColors.primaryLight)),
-                    TextSpan(text: ' UI/UX Studio', style: TextStyle(color: AppColors.textDarkMuted, fontSize: 12, fontWeight: FontWeight.normal)),
+                    TextSpan(
+                      text: 'HOMEFIT',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    TextSpan(
+                      text: ' India',
+                      style: TextStyle(color: AppColors.primaryLight),
+                    ),
+                    TextSpan(
+                      text: ' UI/UX Studio',
+                      style: TextStyle(
+                        color: AppColors.textDarkMuted,
+                        fontSize: 12,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -151,21 +172,34 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
                       },
                       borderRadius: BorderRadius.circular(8),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
                         decoration: BoxDecoration(
                           color: isSel ? AppColors.primary : Colors.transparent,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
                           children: [
-                            Icon(mode.icon, size: 14, color: isSel ? Colors.white : AppColors.textDarkMuted),
+                            Icon(
+                              mode.icon,
+                              size: 14,
+                              color: isSel
+                                  ? Colors.white
+                                  : AppColors.textDarkMuted,
+                            ),
                             const SizedBox(width: 6),
                             Text(
                               mode.label,
                               style: TextStyle(
                                 fontSize: 12,
-                                fontWeight: isSel ? FontWeight.bold : FontWeight.w500,
-                                color: isSel ? Colors.white : AppColors.textDarkSecondary,
+                                fontWeight: isSel
+                                    ? FontWeight.bold
+                                    : FontWeight.w500,
+                                color: isSel
+                                    ? Colors.white
+                                    : AppColors.textDarkSecondary,
                               ),
                             ),
                           ],
@@ -180,8 +214,15 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
               // Orientation Toggle
               if (_deviceMode != DeviceMode.fullWeb) ...[
                 IconButton(
-                  tooltip: _isLandscape ? 'Switch to Portrait' : 'Switch to Landscape',
-                  icon: Icon(_isLandscape ? Icons.stay_current_landscape : Icons.stay_current_portrait, size: 18),
+                  tooltip: _isLandscape
+                      ? 'Switch to Portrait'
+                      : 'Switch to Landscape',
+                  icon: Icon(
+                    _isLandscape
+                        ? Icons.stay_current_landscape
+                        : Icons.stay_current_portrait,
+                    size: 18,
+                  ),
                   color: AppColors.primaryLight,
                   onPressed: () {
                     setState(() {
@@ -194,7 +235,10 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
 
               // Flow Shortcut Jump Dropdown
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF1E293B),
                   borderRadius: BorderRadius.circular(8),
@@ -205,20 +249,96 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
                     value: _selectedFlow,
                     isDense: true,
                     dropdownColor: AppColors.surfaceDark,
-                    icon: const Icon(Icons.arrow_drop_down, color: AppColors.primaryLight, size: 18),
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: AppColors.primaryLight,
+                      size: 18,
+                    ),
                     items: const [
-                      DropdownMenuItem(value: 'role_default', child: Text('⚡ Auto (Role View)', style: TextStyle(fontSize: 12, color: Colors.white))),
-                      DropdownMenuItem(value: 'welcome_onboarding', child: Text('✨ Welcome & Onboarding Hub', style: TextStyle(fontSize: 12, color: Colors.white))),
-                      DropdownMenuItem(value: 'customer_onboarding', child: Text('🎯 Customer Onboarding & Goals', style: TextStyle(fontSize: 12, color: Colors.white))),
-                      DropdownMenuItem(value: 'trainer_onboarding', child: Text('💪 Trainer Application (10-Step)', style: TextStyle(fontSize: 12, color: Colors.white))),
-                      DropdownMenuItem(value: 'landing', child: Text('🌐 Public Landing Page', style: TextStyle(fontSize: 12, color: Colors.white))),
-                      DropdownMenuItem(value: 'search', child: Text('🔍 Trainer Search & Filters', style: TextStyle(fontSize: 12, color: Colors.white))),
-                      DropdownMenuItem(value: 'profile', child: Text('👤 Trainer Profile (Priya)', style: TextStyle(fontSize: 12, color: Colors.white))),
-                      DropdownMenuItem(value: 'booking', child: Text('💳 Slot Hold & UPI Checkout', style: TextStyle(fontSize: 12, color: Colors.white))),
-                      DropdownMenuItem(value: 'customer_dashboard', child: Text('📊 Customer Dashboard', style: TextStyle(fontSize: 12, color: Colors.white))),
-                      DropdownMenuItem(value: 'trainer_dashboard', child: Text('⏱️ Trainer Portal & Timer', style: TextStyle(fontSize: 12, color: Colors.white))),
-                      DropdownMenuItem(value: 'admin_dashboard', child: Text('🛡️ Admin Verification Queue', style: TextStyle(fontSize: 12, color: Colors.white))),
-                      DropdownMenuItem(value: 'support_dashboard', child: Text('🎧 Support & Dispute Console', style: TextStyle(fontSize: 12, color: Colors.white))),
+                      DropdownMenuItem(
+                        value: 'role_default',
+                        child: Text(
+                          '⚡ Auto (Role View)',
+                          style: TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'welcome_onboarding',
+                        child: Text(
+                          '✨ Welcome & Onboarding Hub',
+                          style: TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'customer_onboarding',
+                        child: Text(
+                          '🎯 Customer Onboarding & Goals',
+                          style: TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'trainer_onboarding',
+                        child: Text(
+                          '💪 Trainer Application (10-Step)',
+                          style: TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'landing',
+                        child: Text(
+                          '🌐 Public Landing Page',
+                          style: TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'search',
+                        child: Text(
+                          '🔍 Trainer Search & Filters',
+                          style: TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'profile',
+                        child: Text(
+                          '👤 Trainer Profile (Priya)',
+                          style: TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'booking',
+                        child: Text(
+                          '💳 Slot Hold & UPI Checkout',
+                          style: TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'customer_dashboard',
+                        child: Text(
+                          '📊 Customer Dashboard',
+                          style: TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'trainer_dashboard',
+                        child: Text(
+                          '⏱️ Trainer Portal & Timer',
+                          style: TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'admin_dashboard',
+                        child: Text(
+                          '🛡️ Admin Verification Queue',
+                          style: TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'support_dashboard',
+                        child: Text(
+                          '🎧 Support & Dispute Console',
+                          style: TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                      ),
                     ],
                     onChanged: (val) {
                       if (val != null) {
@@ -243,7 +363,10 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
 
               // Role Switcher Pill
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFF1E293B),
                   borderRadius: BorderRadius.circular(8),
@@ -254,12 +377,56 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
                     value: state.currentRole,
                     isDense: true,
                     dropdownColor: AppColors.surfaceDark,
-                    icon: const Icon(Icons.arrow_drop_down, color: AppColors.accent, size: 18),
+                    icon: const Icon(
+                      Icons.arrow_drop_down,
+                      color: AppColors.accent,
+                      size: 18,
+                    ),
                     items: const [
-                      DropdownMenuItem(value: UserRole.customer, child: Text('Role: Customer', style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w600))),
-                      DropdownMenuItem(value: UserRole.trainer, child: Text('Role: Trainer Pro', style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w600))),
-                      DropdownMenuItem(value: UserRole.admin, child: Text('Role: Admin Ops', style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w600))),
-                      DropdownMenuItem(value: UserRole.support, child: Text('Role: Support Agent', style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w600))),
+                      DropdownMenuItem(
+                        value: UserRole.customer,
+                        child: Text(
+                          'Role: Customer',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: UserRole.trainer,
+                        child: Text(
+                          'Role: Trainer Pro',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: UserRole.admin,
+                        child: Text(
+                          'Role: Admin Ops',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: UserRole.support,
+                        child: Text(
+                          'Role: Support Agent',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
                     ],
                     onChanged: (role) {
                       if (role != null) {
@@ -307,7 +474,11 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
                 const SizedBox(width: 6),
                 Text(
                   '${_deviceMode == DeviceMode.mobile ? "Mobile Device View (393 × 852 px)" : "Tablet Device View (820 × 1180 px)"} • Touch & Scroll Enabled',
-                  style: const TextStyle(fontSize: 12, color: AppColors.textDarkSecondary, fontWeight: FontWeight.w500),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textDarkSecondary,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
@@ -323,7 +494,7 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
                 border: Border.all(color: const Color(0xFF475569), width: 3),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.6),
+                    color: Colors.black.withValues(alpha: 0.6),
                     blurRadius: 40,
                     spreadRadius: 8,
                     offset: const Offset(0, 16),
@@ -342,16 +513,23 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
                           size: Size(targetWidth, targetHeight),
                           padding: EdgeInsets.only(
                             top: _deviceMode == DeviceMode.mobile ? 44.0 : 24.0,
-                            bottom: _deviceMode == DeviceMode.mobile ? 34.0 : 20.0,
+                            bottom: _deviceMode == DeviceMode.mobile
+                                ? 34.0
+                                : 20.0,
                           ),
                           viewPadding: EdgeInsets.only(
                             top: _deviceMode == DeviceMode.mobile ? 44.0 : 24.0,
-                            bottom: _deviceMode == DeviceMode.mobile ? 34.0 : 20.0,
+                            bottom: _deviceMode == DeviceMode.mobile
+                                ? 34.0
+                                : 20.0,
                           ),
                         ),
                         child: Container(
                           color: AppColors.backgroundDark,
-                          child: _buildActiveFlowContent(state, isEmbeddedInDevice: true),
+                          child: _buildActiveFlowContent(
+                            state,
+                            isEmbeddedInDevice: true,
+                          ),
                         ),
                       ),
                     ),
@@ -371,7 +549,11 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
                             children: [
                               const Text(
                                 '9:41',
-                                style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               // Dynamic Island
                               Container(
@@ -384,11 +566,23 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
                               ),
                               const Row(
                                 children: [
-                                  Icon(Icons.signal_cellular_4_bar, color: Colors.white, size: 14),
+                                  Icon(
+                                    Icons.signal_cellular_4_bar,
+                                    color: Colors.white,
+                                    size: 14,
+                                  ),
                                   SizedBox(width: 4),
-                                  Icon(Icons.wifi, color: Colors.white, size: 14),
+                                  Icon(
+                                    Icons.wifi,
+                                    color: Colors.white,
+                                    size: 14,
+                                  ),
                                   SizedBox(width: 4),
-                                  Icon(Icons.battery_full, color: Colors.white, size: 14),
+                                  Icon(
+                                    Icons.battery_full,
+                                    color: Colors.white,
+                                    size: 14,
+                                  ),
                                 ],
                               ),
                             ],
@@ -407,7 +601,7 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
                             width: 135,
                             height: 4.5,
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.6),
+                              color: Colors.white.withValues(alpha: 0.6),
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
@@ -424,7 +618,10 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
   }
 
   // --- Content Dispatcher ---
-  Widget _buildActiveFlowContent(AppState state, {bool isEmbeddedInDevice = false}) {
+  Widget _buildActiveFlowContent(
+    AppState state, {
+    bool isEmbeddedInDevice = false,
+  }) {
     if (_selectedFlow == 'welcome_onboarding') {
       return const WelcomeOnboardingView();
     } else if (_selectedFlow == 'customer_onboarding') {
@@ -432,7 +629,9 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
     } else if (_selectedFlow == 'trainer_onboarding') {
       return const TrainerOnboardingView();
     } else if (_selectedFlow == 'landing') {
-      return LandingPage(onExploreClick: () => setState(() => _selectedFlow = 'search'));
+      return LandingPage(
+        onExploreClick: () => setState(() => _selectedFlow = 'search'),
+      );
     } else if (_selectedFlow == 'search') {
       return const TrainerSearchView();
     } else if (_selectedFlow == 'profile') {
@@ -476,4 +675,3 @@ class _DevicePreviewShellState extends State<DevicePreviewShell> {
     }
   }
 }
-

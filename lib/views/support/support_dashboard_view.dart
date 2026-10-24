@@ -41,9 +41,16 @@ class _SupportDashboardViewState extends State<SupportDashboardView> {
             ),
             child: Row(
               children: [
-                const Icon(Icons.shield_outlined, size: 14, color: AppColors.accent),
+                const Icon(
+                  Icons.shield_outlined,
+                  size: 14,
+                  color: AppColors.accent,
+                ),
                 const SizedBox(width: 6),
-                const Text('Role: Support Agent (Neha Patel)', style: TextStyle(fontSize: 12, color: Colors.white)),
+                const Text(
+                  'Role: Support Agent (Neha Patel)',
+                  style: TextStyle(fontSize: 12, color: Colors.white),
+                ),
               ],
             ),
           ),
@@ -76,7 +83,11 @@ class _SupportDashboardViewState extends State<SupportDashboardView> {
                   children: [
                     const Text(
                       'Assigned Support Tickets',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                     Row(
                       children: [
@@ -94,7 +105,10 @@ class _SupportDashboardViewState extends State<SupportDashboardView> {
                 Expanded(
                   child: tickets.isEmpty
                       ? const Center(
-                          child: Text('No support tickets in this view.', style: TextStyle(color: AppColors.textDarkMuted)),
+                          child: Text(
+                            'No support tickets in this view.',
+                            style: TextStyle(color: AppColors.textDarkMuted),
+                          ),
                         )
                       : ListView.builder(
                           itemCount: tickets.length,
@@ -121,7 +135,11 @@ class _SupportDashboardViewState extends State<SupportDashboardView> {
     );
   }
 
-  Widget _buildTicketCard(BuildContext context, AppState state, SupportTicketModel t) {
+  Widget _buildTicketCard(
+    BuildContext context,
+    AppState state,
+    SupportTicketModel t,
+  ) {
     final isResolved = t.status == TicketStatus.resolved;
 
     return Card(
@@ -134,29 +152,45 @@ class _SupportDashboardViewState extends State<SupportDashboardView> {
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: t.priority == TicketPriority.urgent
-                        ? AppColors.error.withOpacity(0.15)
-                        : AppColors.warning.withOpacity(0.15),
+                        ? AppColors.error.withValues(alpha: 0.15)
+                        : AppColors.warning.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
                     'Priority: ${t.priority.name.toUpperCase()}',
                     style: TextStyle(
-                      color: t.priority == TicketPriority.urgent ? AppColors.error : AppColors.warning,
+                      color: t.priority == TicketPriority.urgent
+                          ? AppColors.error
+                          : AppColors.warning,
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 const SizedBox(width: 10),
-                Text('Case ID: #${t.id}', style: const TextStyle(fontSize: 12, color: AppColors.textDarkMuted)),
+                Text(
+                  'Case ID: #${t.id}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textDarkMuted,
+                  ),
+                ),
                 const Spacer(),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
-                    color: isResolved ? AppColors.accent.withOpacity(0.15) : AppColors.info.withOpacity(0.15),
+                    color: isResolved
+                        ? AppColors.accent.withValues(alpha: 0.15)
+                        : AppColors.info.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
@@ -171,14 +205,31 @@ class _SupportDashboardViewState extends State<SupportDashboardView> {
               ],
             ),
             const SizedBox(height: 10),
-            Text(t.category, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+            Text(
+              t.category,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
             const SizedBox(height: 4),
             Text(
               'Customer: ${t.customerName} • Assigned Trainer: ${t.trainerName}',
-              style: const TextStyle(fontSize: 12, color: AppColors.primaryLight),
+              style: const TextStyle(
+                fontSize: 12,
+                color: AppColors.primaryLight,
+              ),
             ),
             const SizedBox(height: 8),
-            Text(t.description, style: const TextStyle(fontSize: 13, color: AppColors.textDarkSecondary, height: 1.4)),
+            Text(
+              t.description,
+              style: const TextStyle(
+                fontSize: 13,
+                color: AppColors.textDarkSecondary,
+                height: 1.4,
+              ),
+            ),
             const SizedBox(height: 12),
 
             if (t.requestedRefundInr > 0)
@@ -190,11 +241,19 @@ class _SupportDashboardViewState extends State<SupportDashboardView> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.currency_rupee, color: AppColors.accent, size: 16),
+                    const Icon(
+                      Icons.currency_rupee,
+                      color: AppColors.accent,
+                      size: 16,
+                    ),
                     const SizedBox(width: 6),
                     Text(
                       'Requested Compensation / Refund: ${Formatters.formatINR(t.requestedRefundInr)}',
-                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ],
                 ),
@@ -204,7 +263,11 @@ class _SupportDashboardViewState extends State<SupportDashboardView> {
               const SizedBox(height: 10),
               Text(
                 'Resolution: ${t.resolutionNotes}',
-                style: const TextStyle(fontSize: 12, color: AppColors.accent, fontStyle: FontStyle.italic),
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.accent,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
             ],
 
@@ -218,7 +281,10 @@ class _SupportDashboardViewState extends State<SupportDashboardView> {
                 if (!isResolved) ...[
                   OutlinedButton(
                     onPressed: () {
-                      state.resolveDispute(t.id, 'Customer advised on re-booking reschedule policy.');
+                      state.resolveDispute(
+                        t.id,
+                        'Customer advised on re-booking reschedule policy.',
+                      );
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Ticket resolved.')),
                       );
@@ -228,16 +294,32 @@ class _SupportDashboardViewState extends State<SupportDashboardView> {
                   const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
-                      state.resolveDispute(t.id, 'Refund processed by support escalation desk.', issueRefund: true);
+                      state.resolveDispute(
+                        t.id,
+                        'Refund processed by support escalation desk.',
+                        issueRefund: true,
+                      );
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Case resolved with full client refund.')),
+                        const SnackBar(
+                          content: Text(
+                            'Case resolved with full client refund.',
+                          ),
+                        ),
                       );
                     },
-                    style: ElevatedButton.styleFrom(backgroundColor: AppColors.accent),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.accent,
+                    ),
                     child: const Text('Resolve & Issue Refund'),
                   ),
                 ] else ...[
-                  const Text('Case Closed', style: TextStyle(fontSize: 12, color: AppColors.textDarkMuted)),
+                  const Text(
+                    'Case Closed',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textDarkMuted,
+                    ),
+                  ),
                 ],
               ],
             ),
@@ -247,4 +329,3 @@ class _SupportDashboardViewState extends State<SupportDashboardView> {
     );
   }
 }
-

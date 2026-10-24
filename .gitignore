@@ -45,3 +45,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Local Firebase state and deployment credentials
+.firebase/
+firebase-debug*.log
+*.service-account.json
+*firebase-adminsdk*.json

@@ -85,7 +85,7 @@ class UserModel {
     required this.phone,
     required this.role,
     this.avatarUrl = '',
-    this.city = 'Bengaluru',
+    this.city = 'Gurugram',
     this.area = 'Koramangala',
     this.preferences,
   });
@@ -114,4 +114,3 @@ class UserModel {
     );
   }
 }
-

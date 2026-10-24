@@ -12,8 +12,12 @@ class SupportAuthView extends StatefulWidget {
 }
 
 class _SupportAuthViewState extends State<SupportAuthView> {
-  final TextEditingController _agentEmailCtrl = TextEditingController(text: 'neha.support@fitpro.in');
-  final TextEditingController _agentPassCtrl = TextEditingController(text: 'SupportDesk@2026');
+  final TextEditingController _agentEmailCtrl = TextEditingController(
+    text: 'neha.support@homefit.demo',
+  );
+  final TextEditingController _agentPassCtrl = TextEditingController(
+    text: 'SupportDesk@2026',
+  );
   bool _obscurePass = true;
 
   @override
@@ -39,9 +43,7 @@ class _SupportAuthViewState extends State<SupportAuthView> {
     final state = context.watch<AppState>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Support Desk Authentication'),
-      ),
+      appBar: AppBar(title: const Text('Support Desk Authentication')),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -59,10 +61,14 @@ class _SupportAuthViewState extends State<SupportAuthView> {
                         Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: AppColors.info.withOpacity(0.15),
+                            color: AppColors.info.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(Icons.support_agent, color: AppColors.info, size: 28),
+                          child: const Icon(
+                            Icons.support_agent,
+                            color: AppColors.info,
+                            size: 28,
+                          ),
                         ),
                         const SizedBox(width: 14),
                         const Expanded(
@@ -71,11 +77,18 @@ class _SupportAuthViewState extends State<SupportAuthView> {
                             children: [
                               Text(
                                 'Support Agent Console',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
                               Text(
                                 'Grievance & Dispute Triage Portal',
-                                style: TextStyle(fontSize: 11, color: AppColors.textDarkSecondary),
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: AppColors.textDarkSecondary,
+                                ),
                               ),
                             ],
                           ),
@@ -95,12 +108,20 @@ class _SupportAuthViewState extends State<SupportAuthView> {
                       ),
                       child: const Row(
                         children: [
-                          Icon(Icons.shield_outlined, color: AppColors.info, size: 18),
+                          Icon(
+                            Icons.shield_outlined,
+                            color: AppColors.info,
+                            size: 18,
+                          ),
                           SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               'Support agents handle assigned client tickets and booking grievances under least-privilege data access.',
-                              style: TextStyle(fontSize: 11, color: Colors.white70, height: 1.4),
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Colors.white70,
+                                height: 1.4,
+                              ),
                             ),
                           ),
                         ],
@@ -108,7 +129,13 @@ class _SupportAuthViewState extends State<SupportAuthView> {
                     ),
                     const SizedBox(height: 20),
 
-                    const Text('Agent Email ID', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+                    const Text(
+                      'Agent Email ID',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textDarkSecondary,
+                      ),
+                    ),
                     const SizedBox(height: 4),
                     TextField(
                       controller: _agentEmailCtrl,
@@ -119,7 +146,13 @@ class _SupportAuthViewState extends State<SupportAuthView> {
                     ),
                     const SizedBox(height: 14),
 
-                    const Text('Agent Password', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+                    const Text(
+                      'Agent Password',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textDarkSecondary,
+                      ),
+                    ),
                     const SizedBox(height: 4),
                     TextField(
                       controller: _agentPassCtrl,
@@ -128,8 +161,14 @@ class _SupportAuthViewState extends State<SupportAuthView> {
                         prefixIcon: const Icon(Icons.lock_outline, size: 18),
                         isDense: true,
                         suffixIcon: IconButton(
-                          icon: Icon(_obscurePass ? Icons.visibility_off : Icons.visibility, size: 18),
-                          onPressed: () => setState(() => _obscurePass = !_obscurePass),
+                          icon: Icon(
+                            _obscurePass
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            size: 18,
+                          ),
+                          onPressed: () =>
+                              setState(() => _obscurePass = !_obscurePass),
                         ),
                       ),
                     ),
@@ -157,4 +196,3 @@ class _SupportAuthViewState extends State<SupportAuthView> {
     );
   }
 }
-

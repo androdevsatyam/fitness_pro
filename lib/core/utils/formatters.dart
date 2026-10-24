@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 class Formatters {
   static final NumberFormat _inrFormatter = NumberFormat.currency(
     locale: 'en_IN',
-    symbol: '₹',
+    symbol: '\u20B9',
     decimalDigits: 0,
   );
 
@@ -28,4 +28,3 @@ class Formatters {
     return '+91 $phone';
   }
 }
-

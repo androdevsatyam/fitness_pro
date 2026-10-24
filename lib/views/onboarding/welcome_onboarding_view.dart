@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../core/state/app_state.dart';
+
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/responsive.dart';
 import 'customer_onboarding_view.dart';
@@ -50,9 +49,7 @@ class _WelcomeOnboardingViewState extends State<WelcomeOnboardingView> {
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: AppColors.heroGradient,
-        ),
+        decoration: const BoxDecoration(gradient: AppColors.heroGradient),
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
@@ -74,25 +71,43 @@ class _WelcomeOnboardingViewState extends State<WelcomeOnboardingView> {
                             gradient: AppColors.primaryGradient,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Icon(Icons.fitness_center, color: Colors.white, size: 22),
+                          child: const Icon(
+                            Icons.fitness_center,
+                            color: Colors.white,
+                            size: 22,
+                          ),
                         ),
                         const SizedBox(width: 10),
                         RichText(
                           text: const TextSpan(
-                            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
                             children: [
-                              TextSpan(text: 'FitPro', style: TextStyle(color: Colors.white)),
-                              TextSpan(text: ' India', style: TextStyle(color: AppColors.primaryLight)),
+                              TextSpan(
+                                text: 'HOMEFIT',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              TextSpan(
+                                text: ' India',
+                                style: TextStyle(color: AppColors.primaryLight),
+                              ),
                             ],
                           ),
                         ),
                         const SizedBox(width: 8),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
                           decoration: BoxDecoration(
-                            color: AppColors.accent.withOpacity(0.15),
+                            color: AppColors.accent.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(6),
-                            border: Border.all(color: AppColors.accent.withOpacity(0.5)),
+                            border: Border.all(
+                              color: AppColors.accent.withValues(alpha: 0.5),
+                            ),
                           ),
                           child: const Text(
                             '🇮🇳 INR (₹)',
@@ -115,11 +130,20 @@ class _WelcomeOnboardingViewState extends State<WelcomeOnboardingView> {
                         child: Column(
                           children: [
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
                               decoration: BoxDecoration(
-                                color: AppColors.primary.withOpacity(0.15),
+                                color: AppColors.primary.withValues(
+                                  alpha: 0.15,
+                                ),
                                 borderRadius: BorderRadius.circular(20),
-                                border: Border.all(color: AppColors.primary.withOpacity(0.4)),
+                                border: Border.all(
+                                  color: AppColors.primary.withValues(
+                                    alpha: 0.4,
+                                  ),
+                                ),
                               ),
                               child: Text(
                                 _slides[_activeSlide]['badge'],
@@ -163,7 +187,10 @@ class _WelcomeOnboardingViewState extends State<WelcomeOnboardingView> {
                             const SizedBox(height: 16),
 
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 6,
+                              ),
                               decoration: BoxDecoration(
                                 color: AppColors.surfaceDarkCard,
                                 borderRadius: BorderRadius.circular(10),
@@ -186,13 +213,18 @@ class _WelcomeOnboardingViewState extends State<WelcomeOnboardingView> {
                               children: List.generate(_slides.length, (idx) {
                                 final isCur = _activeSlide == idx;
                                 return InkWell(
-                                  onTap: () => setState(() => _activeSlide = idx),
+                                  onTap: () =>
+                                      setState(() => _activeSlide = idx),
                                   child: Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 4,
+                                    ),
                                     width: isCur ? 24 : 8,
                                     height: 8,
                                     decoration: BoxDecoration(
-                                      color: isCur ? AppColors.primaryLight : AppColors.borderDark,
+                                      color: isCur
+                                          ? AppColors.primaryLight
+                                          : AppColors.borderDark,
                                       borderRadius: BorderRadius.circular(4),
                                     ),
                                   ),
@@ -231,7 +263,10 @@ class _WelcomeOnboardingViewState extends State<WelcomeOnboardingView> {
                                   onTap: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (_) => const CustomerOnboardingView()),
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            const CustomerOnboardingView(),
+                                      ),
                                     );
                                   },
                                 ),
@@ -249,7 +284,10 @@ class _WelcomeOnboardingViewState extends State<WelcomeOnboardingView> {
                                   onTap: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (_) => const TrainerOnboardingView()),
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            const TrainerOnboardingView(),
+                                      ),
                                     );
                                   },
                                 ),
@@ -269,7 +307,10 @@ class _WelcomeOnboardingViewState extends State<WelcomeOnboardingView> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => const CustomerOnboardingView()),
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          const CustomerOnboardingView(),
+                                    ),
                                   );
                                 },
                               ),
@@ -285,7 +326,10 @@ class _WelcomeOnboardingViewState extends State<WelcomeOnboardingView> {
                                 onTap: () {
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (_) => const TrainerOnboardingView()),
+                                    MaterialPageRoute(
+                                      builder: (_) =>
+                                          const TrainerOnboardingView(),
+                                    ),
                                   );
                                 },
                               ),
@@ -303,7 +347,9 @@ class _WelcomeOnboardingViewState extends State<WelcomeOnboardingView> {
                           ),
                         );
                       },
-                      icon: const Text('Or explore marketplace directly without onboarding'),
+                      icon: const Text(
+                        'Or explore marketplace directly without onboarding',
+                      ),
                       label: const Icon(Icons.arrow_forward, size: 16),
                     ),
                   ],
@@ -340,7 +386,7 @@ class _WelcomeOnboardingViewState extends State<WelcomeOnboardingView> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.15),
+                  color: color.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, color: color, size: 24),
@@ -349,12 +395,16 @@ class _WelcomeOnboardingViewState extends State<WelcomeOnboardingView> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
+                  color: color.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   badge,
-                  style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    color: color,
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ],
@@ -394,4 +444,3 @@ class _WelcomeOnboardingViewState extends State<WelcomeOnboardingView> {
     );
   }
 }
-

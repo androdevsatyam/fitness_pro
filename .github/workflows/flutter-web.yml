@@ -1,0 +1,83 @@
+﻿name: Flutter web CI and Firebase CD
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: Deploy the checked main commit to Firebase Hosting
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: flutter-web-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Analyze, test and build web
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: '3.35.1'
+          cache: true
+      - name: Resolve locked dependencies
+        run: flutter pub get --enforce-lockfile
+      - name: Analyze (errors and warnings fail; existing info lints remain visible)
+        run: flutter analyze --no-fatal-infos
+      - name: Run tests
+        run: flutter test
+      - name: Build production web files
+        run: flutter build web --release --no-pub
+      - name: Upload deployable web artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: homefit-web-${{ github.sha }}
+          path: build/web
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    name: Deploy web to Firebase Hosting
+    needs: build
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      vars.FIREBASE_PROJECT_ID != '' &&
+      (github.event_name == 'push' ||
+       (github.event_name == 'workflow_dispatch' && inputs.deploy))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: firebase-production
+    concurrency:
+      group: firebase-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: homefit-web-${{ github.sha }}
+          path: build/web
+      - name: Check deployment credentials
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo 'Add the FIREBASE_SERVICE_ACCOUNT Actions secret before enabling deployment.'
+            exit 1
+          fi
+      - name: Deploy tested artifact to the live channel
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: ${{ vars.FIREBASE_PROJECT_ID }}
+          channelId: live

@@ -174,8 +174,8 @@ void main() {
         ),
       );
 
-      expect(find.text('Switch Role View:'), findsOneWidget);
-      expect(find.text('🇮🇳 INR (₹)'), findsOneWidget);
+      expect(find.text('Preview role:'), findsOneWidget);
+      expect(find.text('Gurugram | INR'), findsOneWidget);
     });
   });
 }

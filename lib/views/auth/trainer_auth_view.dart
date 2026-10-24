@@ -13,8 +13,12 @@ class TrainerAuthView extends StatefulWidget {
 }
 
 class _TrainerAuthViewState extends State<TrainerAuthView> {
-  final TextEditingController _emailPhoneCtrl = TextEditingController(text: 'priya.fitness@example.com');
-  final TextEditingController _passCtrl = TextEditingController(text: 'Trainer@1234');
+  final TextEditingController _emailPhoneCtrl = TextEditingController(
+    text: 'priya.fitness@example.com',
+  );
+  final TextEditingController _passCtrl = TextEditingController(
+    text: 'Trainer@1234',
+  );
   bool _obscurePass = true;
 
   @override
@@ -30,7 +34,9 @@ class _TrainerAuthViewState extends State<TrainerAuthView> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         backgroundColor: AppColors.accent,
-        content: Text('Trainer authentication successful. Welcome back, Coach Priya!'),
+        content: Text(
+          'Trainer authentication successful. Welcome back, Coach Priya!',
+        ),
       ),
     );
   }
@@ -40,9 +46,7 @@ class _TrainerAuthViewState extends State<TrainerAuthView> {
     final state = context.watch<AppState>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Trainer Portal Access'),
-      ),
+      appBar: AppBar(title: const Text('Trainer Portal Access')),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -61,10 +65,14 @@ class _TrainerAuthViewState extends State<TrainerAuthView> {
                         Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: AppColors.primary.withOpacity(0.15),
+                            color: AppColors.primary.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(Icons.sports_kabaddi, color: AppColors.primaryLight, size: 26),
+                          child: const Icon(
+                            Icons.sports_kabaddi,
+                            color: AppColors.primaryLight,
+                            size: 26,
+                          ),
                         ),
                         const SizedBox(width: 14),
                         const Expanded(
@@ -73,11 +81,18 @@ class _TrainerAuthViewState extends State<TrainerAuthView> {
                             children: [
                               Text(
                                 'Freelance Trainer Portal',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
                               Text(
                                 'Authentication Required to Conduct Sessions',
-                                style: TextStyle(fontSize: 11, color: AppColors.textDarkSecondary),
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: AppColors.textDarkSecondary,
+                                ),
                               ),
                             ],
                           ),
@@ -98,12 +113,20 @@ class _TrainerAuthViewState extends State<TrainerAuthView> {
                       ),
                       child: const Row(
                         children: [
-                          Icon(Icons.shield_outlined, color: AppColors.accent, size: 18),
+                          Icon(
+                            Icons.shield_outlined,
+                            color: AppColors.accent,
+                            size: 18,
+                          ),
                           SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               'Only registered & compliance-verified trainers can view customer locations, accept requests, and initiate workout sessions.',
-                              style: TextStyle(fontSize: 11, color: Colors.white70, height: 1.4),
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Colors.white70,
+                                height: 1.4,
+                              ),
                             ),
                           ),
                         ],
@@ -111,7 +134,13 @@ class _TrainerAuthViewState extends State<TrainerAuthView> {
                     ),
                     const SizedBox(height: 20),
 
-                    const Text('Registered Email or Phone', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+                    const Text(
+                      'Registered Email or Phone',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textDarkSecondary,
+                      ),
+                    ),
                     const SizedBox(height: 4),
                     TextField(
                       controller: _emailPhoneCtrl,
@@ -122,7 +151,13 @@ class _TrainerAuthViewState extends State<TrainerAuthView> {
                     ),
                     const SizedBox(height: 14),
 
-                    const Text('Password', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+                    const Text(
+                      'Password',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textDarkSecondary,
+                      ),
+                    ),
                     const SizedBox(height: 4),
                     TextField(
                       controller: _passCtrl,
@@ -131,8 +166,14 @@ class _TrainerAuthViewState extends State<TrainerAuthView> {
                         prefixIcon: const Icon(Icons.lock_outline, size: 18),
                         isDense: true,
                         suffixIcon: IconButton(
-                          icon: Icon(_obscurePass ? Icons.visibility_off : Icons.visibility, size: 18),
-                          onPressed: () => setState(() => _obscurePass = !_obscurePass),
+                          icon: Icon(
+                            _obscurePass
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            size: 18,
+                          ),
+                          onPressed: () =>
+                              setState(() => _obscurePass = !_obscurePass),
                         ),
                       ),
                     ),
@@ -144,7 +185,9 @@ class _TrainerAuthViewState extends State<TrainerAuthView> {
                       child: ElevatedButton.icon(
                         onPressed: () => _login(state),
                         icon: const Icon(Icons.login, size: 18),
-                        label: const Text('Sign In as Coach (Demo: Priya Nair)'),
+                        label: const Text(
+                          'Sign In as Coach (Demo: Priya Nair)',
+                        ),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
                         ),
@@ -155,7 +198,13 @@ class _TrainerAuthViewState extends State<TrainerAuthView> {
                     const SizedBox(height: 12),
 
                     // Apply Button
-                    const Text('New to FitPro India?', style: TextStyle(fontSize: 12, color: AppColors.textDarkMuted)),
+                    const Text(
+                      'New to HOMEFIT?',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textDarkMuted,
+                      ),
+                    ),
                     const SizedBox(height: 8),
                     SizedBox(
                       width: double.infinity,
@@ -163,11 +212,19 @@ class _TrainerAuthViewState extends State<TrainerAuthView> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const TrainerOnboardingView()),
+                            MaterialPageRoute(
+                              builder: (_) => const TrainerOnboardingView(),
+                            ),
                           );
                         },
-                        icon: const Icon(Icons.app_registration, size: 18, color: AppColors.accent),
-                        label: const Text('Apply as Freelance Trainer (10-Step Form)'),
+                        icon: const Icon(
+                          Icons.app_registration,
+                          size: 18,
+                          color: AppColors.accent,
+                        ),
+                        label: const Text(
+                          'Apply as Freelance Trainer (10-Step Form)',
+                        ),
                         style: OutlinedButton.styleFrom(
                           side: const BorderSide(color: AppColors.accent),
                           padding: const EdgeInsets.symmetric(vertical: 13),
@@ -184,4 +241,3 @@ class _TrainerAuthViewState extends State<TrainerAuthView> {
     );
   }
 }
-

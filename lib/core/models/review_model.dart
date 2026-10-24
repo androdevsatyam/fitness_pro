@@ -21,4 +21,3 @@ class ReviewModel {
     this.isVerifiedBooking = true,
   });
 }
-

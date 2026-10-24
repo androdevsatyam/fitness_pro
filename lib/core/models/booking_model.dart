@@ -53,7 +53,10 @@ class PriceBreakdown {
     required double travelFee,
     required double discountAmount,
   }) {
-    final subtotal = (basePrice + travelFee - discountAmount).clamp(0.0, double.infinity);
+    final subtotal = (basePrice + travelFee - discountAmount).clamp(
+      0.0,
+      double.infinity,
+    );
     final platformFee = basePrice * (platformFeePercent / 100);
     final taxableAmount = subtotal + platformFee;
     final gst = taxableAmount * 0.18; // 18% GST on services in India
@@ -177,4 +180,3 @@ class BookingModel {
     );
   }
 }
-

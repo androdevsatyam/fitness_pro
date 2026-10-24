@@ -1,93 +1,45 @@
-# 🇮🇳 FitPro India - Freelance Fitness Trainer Marketplace
+# HOMEFIT — phase 1 UI prototype
 
-> **"Find a certified fitness professional near you. Train on your schedule. No gym membership or expensive equipment required."**
+Flutter public customer experience for the Gurugram home-fitness pilot.
 
-A multi-platform fitness marketplace prototype connecting clients across India with independent, verified fitness coaches for in-person personal training at **home, apartment society gyms, or nearby parks**.
+## Run
 
----
-
-## 🌐 Live Prototype Demonstration
-
-Explore the live UI/UX prototype across **Desktop Web**, **Mobile (iPhone / Android)**, and **Tablet** viewports:
-
-👉 **[https://androdevsatyam.github.io/fitness_pro/](https://androdevsatyam.github.io/fitness_pro/)**
-
-*(Hosted on the `public_prototype` branch via GitHub Pages)*
-
----
-
-## 📱 Multi-Device Studio Simulator
-
-When running on the web, FitPro India includes an interactive **Device Preview Studio Shell**:
-* 🖥️ **Desktop Web Mode**: Full-width, multi-column responsive experience with expanded grids and administrative dashboards.
-* 📱 **Mobile Device Mode (iPhone 16 Pro / Android)**: Renders the entire application inside an interactive smartphone frame ($393 \times 852\text{ px}$) complete with dynamic island, status bar, and bottom navigation.
-* 📟 **Tablet Mode (iPad Air)**: $820 \times 1180\text{ px}$ responsive layout.
-* 🔄 **Device Orientation**: 1-click toggle between Portrait and Landscape modes.
-* ⚡ **Flow Switcher**: Quick-jump directly to any screen in the prototype.
-* 🎭 **Role Switcher**: Instant role toggle between Customer, Trainer, Administrator, and Support Agent.
-
----
-
-## 🚀 Key Features Built
-
-### 1. Indian Market Context
-* All prices in Indian Rupees (**₹**)
-* Indian phone verification (`+91`) with simulated 4-digit OTP
-* Default Asia/Kolkata timezone
-* Major Indian metros: Bengaluru, Mumbai, Delhi NCR, Hyderabad, Pune
-* Local payment flows: UPI (Google Pay, PhonePe, Paytm, BHIM), RuPay/Visa/Mastercard, NetBanking
-* Itemized 18% GST calculation
-
-### 2. Multi-Role Architecture
-* **Customer**: Discover local trainers, personalized fitness matching quiz, reserve session slots, pay, chat with trainer, leave verified reviews, report issues.
-* **Trainer Pro**: Apply and upload accreditation proofs (ACE, ACSM, Yoga Alliance, K11), set hourly rates in ₹, configure travel radius, accept bookings, execute session lifecycle with a **Live Stopwatch Timer**, and track net weekly payouts.
-* **Administrator**: Gross Booking Value (GBV) vs Platform Revenue KPIs, **Trainer Verification Queue** (inspect certificates and Aadhaar ID checks), dispute resolution with refund actions, and dynamic platform commission sliders.
-* **Support Agent**: Support ticket queue with priority routing and grievance resolution without exposing sensitive credentials.
-
-### 3. Onboarding Journeys
-* **Welcome Onboarding Hub**: Interactive value propositions highlighting doorstep fitness, freelance trainer autonomy, and accreditation checks.
-* **Customer Goals Quiz**: Primary goals, training styles, session duration (45/60/90m), budget slider, city selection, and limitation notes.
-* **Trainer Accreditation Application**: 10-step submission covering profile, certificate numbers, expiry dates, document uploads, Aadhaar screening, and terms acceptance.
-
-### 4. Booking & Slot Hold Engine
-* **10-Minute Slot Hold Countdown**: Prevents double-booking during checkout.
-* **Transparent Itemized Billing**: Trainer base fee + Travel surcharge + Platform convenience fee (default 12%) - Promo discounts (`FITFIRST`, `HEALTHY10`) + 18% GST.
-
----
-
-## 🛠️ Technology Stack
-
-* **Frontend**: Flutter 3.35+ (Dart 3.9+)
-* **State Management**: Reactive `Provider` with centralized `AppState`
-* **Typography**: Plus Jakarta Sans via `google_fonts`
-* **Formatting**: `intl` (Indian currency ₹, dates, and times)
-* **Design System**: Emerald/Teal energetic fitness palette with Dark Mode theme
-
----
-
-## 💻 Local Setup & Development
-
-```bash
-# 1. Clone repository
-git clone https://github.com/androdevsatyam/fitness_pro.git
-cd fitness_pro
-
-# 2. Get dependencies
+```sh
 flutter pub get
-
-# 3. Run automated tests
-flutter test
-
-# 4. Run on Chrome (Web)
 flutter run -d chrome
-
-# 5. Run on connected Android / iOS device
-flutter run
 ```
 
----
+The public app contains customer discovery, profile, authentication and booking flows. Admin, trainer, assessor and support interfaces are deferred and have no entry points in the public app.
 
-## 📄 License & Ownership
+## Demo walkthrough
 
-Developed for the FitPro India Freelance Fitness Trainer Marketplace.
-© 2026 FitPro India Technologies Pvt. Ltd. All rights reserved.
+1. Explore the home screen, choose a category and open a trainer profile.
+2. Choose **Log in / Register**, enter a name and valid Indian mobile number, request OTP and enter **4589**. No SMS is sent.
+3. Choose a service, future date, time and complete home address. Checkout simulates payment without collecting real payment details or charging money.
+4. Open My bookings to view the session, cancel, chat, report an issue or review a completed session.
+
+## Mock behavior and phase 2 boundary
+
+`lib/core/state/app_state.dart` is the in-memory mock data adapter. Profiles, registration, booking, reviews, messages, verification and support actions mutate local state only. Restarting the app resets the demo. `tryCreateBooking` validates eligibility, future dates and conflicting sessions with a static 30-minute travel buffer. It does not perform route estimation or reserve inventory across devices.
+
+All payment, earnings, verification and qualification information is illustrative. Remote sample profile photos may require connectivity; home-screen avatars and application fonts work locally. There is no backend, SMS, maps, payment gateway, document upload service or production authentication in this phase.
+
+Phase 2 replaces the mock state boundaries with `/api/v1/` services, real OTP sessions, PostGIS matching, travel feasibility, atomic slot reservations, verification/assessment records, payment reconciliation and notifications. The admin assessor workspace supports mock two-day scoring, a safety gate and reassessment outcomes. Full booking/payment state machine enforcement and production assessment records remain phase 2 work.
+
+## Checks
+
+```sh
+flutter analyze
+flutter test
+flutter build web
+```
+
+## Customer experience
+
+The public app uses a warm ivory and forest-green palette, a goal-led home screen, optional discovery filters, simple trainer profiles, and customer bookings and profile views. Feature code is grouped in [lib/features/customer](lib/features/customer/README.md). The home illustration is drawn in Flutter and does not require a remote image service.
+
+Design references: [Kamya Wellness](https://kamyawellness.com/), [Home 1st Fitness](https://home1stfitness.com/) and [Way2Fit](https://www.way2fit.co.in/). Original layouts and copy are used, with no competitor testimonials or performance claims.
+
+## CI/CD
+
+GitHub Actions configuration for checked Flutter web builds and Firebase Hosting deployment is in [.github/workflows/flutter-web.yml](.github/workflows/flutter-web.yml). See [deployment setup](docs/DEPLOYMENT.md) for the required Firebase project ID and GitHub secret. Live deployment remains inactive until those are configured.

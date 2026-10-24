@@ -20,7 +20,7 @@ class RoleSwitcherBar extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.3),
+            color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -36,7 +36,9 @@ class RoleSwitcherBar extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  minWidth: constraints.maxWidth > 0 ? constraints.maxWidth - 32 : 0,
+                  minWidth: constraints.maxWidth > 0
+                      ? constraints.maxWidth - 32
+                      : 0,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -51,31 +53,49 @@ class RoleSwitcherBar extends StatelessWidget {
                             gradient: AppColors.primaryGradient,
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: const Icon(Icons.fitness_center, color: Colors.white, size: 16),
+                          child: const Icon(
+                            Icons.fitness_center,
+                            color: Colors.white,
+                            size: 16,
+                          ),
                         ),
                         const SizedBox(width: 8),
                         RichText(
                           text: const TextSpan(
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
                             children: [
-                              TextSpan(text: 'FitPro', style: TextStyle(color: Colors.white)),
-                              TextSpan(text: ' India', style: TextStyle(color: AppColors.primaryLight)),
+                              TextSpan(
+                                text: 'HOMEFIT',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              TextSpan(
+                                text: ' DEMO',
+                                style: TextStyle(color: AppColors.primaryLight),
+                              ),
                             ],
                           ),
                         ),
                         const SizedBox(width: 8),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
-                            color: AppColors.accent.withOpacity(0.15),
+                            color: AppColors.accent.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(4),
-                            border: Border.all(color: AppColors.accent.withOpacity(0.4)),
+                            border: Border.all(
+                              color: AppColors.accent.withValues(alpha: 0.4),
+                            ),
                           ),
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                '🇮🇳 INR (₹)',
+                                'Gurugram | INR',
                                 style: TextStyle(
                                   color: AppColors.accent,
                                   fontSize: 11,
@@ -95,7 +115,7 @@ class RoleSwitcherBar extends StatelessWidget {
                       children: [
                         if (!isCompact) ...[
                           const Text(
-                            'Switch Role View:',
+                            'Preview role:',
                             style: TextStyle(
                               color: AppColors.textDarkSecondary,
                               fontSize: 12,
@@ -105,7 +125,10 @@ class RoleSwitcherBar extends StatelessWidget {
                           const SizedBox(width: 8),
                         ],
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.surfaceDarkCard,
                             borderRadius: BorderRadius.circular(8),
@@ -116,12 +139,40 @@ class RoleSwitcherBar extends StatelessWidget {
                               value: state.currentRole,
                               isDense: true,
                               dropdownColor: AppColors.surfaceDark,
-                              icon: const Icon(Icons.arrow_drop_down, color: AppColors.primaryLight, size: 18),
+                              icon: const Icon(
+                                Icons.arrow_drop_down,
+                                color: AppColors.primaryLight,
+                                size: 18,
+                              ),
                               items: [
-                                _roleItem(UserRole.customer, Icons.person_outline, state.isCustomerRegistered ? 'Customer (Registered)' : 'Customer (Guest Mode)'),
-                                _roleItem(UserRole.trainer, Icons.sports_gymnastics, state.isTrainerRegistered ? 'Trainer Pro (Logged In)' : 'Trainer Pro (Locked 🔒)'),
-                                _roleItem(UserRole.admin, Icons.admin_panel_settings, state.isAdminRegistered ? 'Admin Ops (Logged In)' : 'Admin Ops (Locked 🔒)'),
-                                _roleItem(UserRole.support, Icons.support_agent, state.isSupportRegistered ? 'Support Agent (Logged In)' : 'Support Agent (Locked 🔒)'),
+                                _roleItem(
+                                  UserRole.customer,
+                                  Icons.person_outline,
+                                  state.isCustomerRegistered
+                                      ? 'Customer (Registered)'
+                                      : 'Customer (Guest Mode)',
+                                ),
+                                _roleItem(
+                                  UserRole.trainer,
+                                  Icons.sports_gymnastics,
+                                  state.isTrainerRegistered
+                                      ? 'Trainer Pro (Logged In)'
+                                      : 'Trainer Pro (Demo login)',
+                                ),
+                                _roleItem(
+                                  UserRole.admin,
+                                  Icons.admin_panel_settings,
+                                  state.isAdminRegistered
+                                      ? 'Admin Ops (Logged In)'
+                                      : 'Admin Ops (Demo login)',
+                                ),
+                                _roleItem(
+                                  UserRole.support,
+                                  Icons.support_agent,
+                                  state.isSupportRegistered
+                                      ? 'Support Agent (Logged In)'
+                                      : 'Support Agent (Demo login)',
+                                ),
                               ],
                               onChanged: (role) {
                                 if (role != null) {
@@ -134,16 +185,29 @@ class RoleSwitcherBar extends StatelessWidget {
                         if (!isCompact) ...[
                           const SizedBox(width: 8),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
-                              color: _getAuthColor(state).withOpacity(0.15),
+                              color: _getAuthColor(
+                                state,
+                              ).withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(6),
-                              border: Border.all(color: _getAuthColor(state).withOpacity(0.4)),
+                              border: Border.all(
+                                color: _getAuthColor(
+                                  state,
+                                ).withValues(alpha: 0.4),
+                              ),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(_getAuthIcon(state), size: 12, color: _getAuthColor(state)),
+                                Icon(
+                                  _getAuthIcon(state),
+                                  size: 12,
+                                  color: _getAuthColor(state),
+                                ),
                                 const SizedBox(width: 4),
                                 Text(
                                   _getAuthStatusText(state),
@@ -172,7 +236,9 @@ class RoleSwitcherBar extends StatelessWidget {
   Color _getAuthColor(AppState state) {
     switch (state.currentRole) {
       case UserRole.customer:
-        return state.isCustomerRegistered ? AppColors.accent : AppColors.primaryLight;
+        return state.isCustomerRegistered
+            ? AppColors.accent
+            : AppColors.primaryLight;
       case UserRole.trainer:
         return state.isTrainerRegistered ? AppColors.accent : AppColors.warning;
       case UserRole.admin:
@@ -185,30 +251,44 @@ class RoleSwitcherBar extends StatelessWidget {
   IconData _getAuthIcon(AppState state) {
     switch (state.currentRole) {
       case UserRole.customer:
-        return state.isCustomerRegistered ? Icons.check_circle_outline : Icons.explore_outlined;
+        return state.isCustomerRegistered
+            ? Icons.check_circle_outline
+            : Icons.explore_outlined;
       case UserRole.trainer:
         return state.isTrainerRegistered ? Icons.verified : Icons.lock_outline;
       case UserRole.admin:
-        return state.isAdminRegistered ? Icons.admin_panel_settings : Icons.lock_outline;
+        return state.isAdminRegistered
+            ? Icons.admin_panel_settings
+            : Icons.lock_outline;
       case UserRole.support:
-        return state.isSupportRegistered ? Icons.headset_mic : Icons.lock_outline;
+        return state.isSupportRegistered
+            ? Icons.headset_mic
+            : Icons.lock_outline;
     }
   }
 
   String _getAuthStatusText(AppState state) {
     switch (state.currentRole) {
       case UserRole.customer:
-        return state.isCustomerRegistered ? 'Registered User' : 'Guest (Free Browse)';
+        return state.isCustomerRegistered
+            ? 'Registered User'
+            : 'Guest (Free Browse)';
       case UserRole.trainer:
         return state.isTrainerRegistered ? 'Trainer Active' : 'Login Required';
       case UserRole.admin:
-        return state.isAdminRegistered ? 'Admin Console' : 'Restricted (Login Req)';
+        return state.isAdminRegistered
+            ? 'Admin Console'
+            : 'Restricted (Login Req)';
       case UserRole.support:
         return state.isSupportRegistered ? 'Support Active' : 'Login Required';
     }
   }
 
-  DropdownMenuItem<UserRole> _roleItem(UserRole role, IconData icon, String label) {
+  DropdownMenuItem<UserRole> _roleItem(
+    UserRole role,
+    IconData icon,
+    String label,
+  ) {
     return DropdownMenuItem<UserRole>(
       value: role,
       child: Row(

@@ -99,6 +99,7 @@ class TrainerModel {
   final String city;
   final List<String> serviceAreas;
   final double maxTravelRadiusKm;
+  final bool openToLongDistance;
   final List<String> preferredTrainingLocations; // Home, Park, Society Gym
   final VerificationStatus verificationStatus;
   final bool idVerified; // Aadhaar / PAN verified status
@@ -125,6 +126,7 @@ class TrainerModel {
     required this.city,
     required this.serviceAreas,
     this.maxTravelRadiusKm = 10.0,
+    this.openToLongDistance = false,
     required this.preferredTrainingLocations,
     this.verificationStatus = VerificationStatus.approved,
     this.idVerified = true,
@@ -152,6 +154,7 @@ class TrainerModel {
     String? city,
     List<String>? serviceAreas,
     double? maxTravelRadiusKm,
+    bool? openToLongDistance,
     List<String>? preferredTrainingLocations,
     VerificationStatus? verificationStatus,
     bool? idVerified,
@@ -178,6 +181,7 @@ class TrainerModel {
       city: city ?? this.city,
       serviceAreas: serviceAreas ?? this.serviceAreas,
       maxTravelRadiusKm: maxTravelRadiusKm ?? this.maxTravelRadiusKm,
+      openToLongDistance: openToLongDistance ?? this.openToLongDistance,
       preferredTrainingLocations:
           preferredTrainingLocations ?? this.preferredTrainingLocations,
       verificationStatus: verificationStatus ?? this.verificationStatus,
@@ -196,4 +200,3 @@ class TrainerModel {
     );
   }
 }
-

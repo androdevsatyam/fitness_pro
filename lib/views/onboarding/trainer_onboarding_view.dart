@@ -17,31 +17,55 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
   int _currentStep = 0;
 
   // Step 1: Personal
-  final TextEditingController _nameCtrl = TextEditingController(text: 'Siddharth Rao');
-  final TextEditingController _phoneCtrl = TextEditingController(text: '9880198801');
-  final TextEditingController _headlineCtrl = TextEditingController(text: 'ACSM Certified Strength & Kettlebell Specialist');
+  final TextEditingController _nameCtrl = TextEditingController(
+    text: 'Siddharth Rao',
+  );
+  final TextEditingController _phoneCtrl = TextEditingController(
+    text: '9880198801',
+  );
+  final TextEditingController _headlineCtrl = TextEditingController(
+    text: 'ACSM Certified Strength & Kettlebell Specialist',
+  );
   final TextEditingController _bioCtrl = TextEditingController(
-    text: 'Dedicated strength coach with 5 years experience helping busy executives build durable functional strength and core endurance at home.',
+    text:
+        'Dedicated strength coach with 5 years experience helping busy executives build durable functional strength and core endurance at home.',
   );
   int _experienceYears = 5;
-  String _selectedCity = 'Bengaluru';
+  String _selectedCity = 'Gurugram';
   double _travelRadiusKm = 10.0;
+  bool _longDistance = false;
   final List<String> _languages = ['English', 'Hindi', 'Kannada'];
 
   // Step 2: Qualifications
-  final TextEditingController _certNameCtrl = TextEditingController(text: 'Certified Personal Trainer');
-  final TextEditingController _issuingOrgCtrl = TextEditingController(text: 'American College of Sports Medicine (ACSM)');
-  final TextEditingController _certNumberCtrl = TextEditingController(text: 'ACSM-IN-2023-882');
-  final TextEditingController _issueDateCtrl = TextEditingController(text: '2023-01-15');
-  final TextEditingController _expiryDateCtrl = TextEditingController(text: '2027-01-15');
+  final TextEditingController _certNameCtrl = TextEditingController(
+    text: 'Certified Personal Trainer',
+  );
+  final TextEditingController _issuingOrgCtrl = TextEditingController(
+    text: 'American College of Sports Medicine (ACSM)',
+  );
+  final TextEditingController _certNumberCtrl = TextEditingController(
+    text: 'ACSM-IN-2023-882',
+  );
+  final TextEditingController _issueDateCtrl = TextEditingController(
+    text: '2023-01-15',
+  );
+  final TextEditingController _expiryDateCtrl = TextEditingController(
+    text: '2027-01-15',
+  );
 
   // Step 3: Identity Verification
-  final TextEditingController _aadhaarCtrl = TextEditingController(text: 'XXXX-XXXX-4819');
+  final TextEditingController _aadhaarCtrl = TextEditingController(
+    text: 'XXXX-XXXX-4819',
+  );
   bool _aadhaarConsent = true;
 
   // Step 4: Service & Pricing
-  final TextEditingController _srvTitleCtrl = TextEditingController(text: '1-on-1 Kettlebell & Functional Strength');
-  final TextEditingController _srvPriceCtrl = TextEditingController(text: '1300');
+  final TextEditingController _srvTitleCtrl = TextEditingController(
+    text: '1-on-1 Kettlebell & Functional Strength',
+  );
+  final TextEditingController _srvPriceCtrl = TextEditingController(
+    text: '1300',
+  );
   int _srvDuration = 60;
   double _travelSurcharge = 100.0;
 
@@ -72,15 +96,21 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
       name: _nameCtrl.text.trim(),
       headline: _headlineCtrl.text.trim(),
       bio: _bioCtrl.text.trim(),
-      photoUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80',
+      photoUrl:
+          'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80',
       rating: 0.0,
       reviewCount: 0,
       experienceYears: _experienceYears,
       languages: _languages,
       city: _selectedCity,
-      serviceAreas: ['Indiranagar', 'Koramangala', 'HSR Layout'],
+      serviceAreas: ['Sector 67', 'Koramangala', 'HSR Layout'],
       maxTravelRadiusKm: _travelRadiusKm,
-      preferredTrainingLocations: ['Customer Home', 'Apartment Society Gym', 'Public Park'],
+      openToLongDistance: _longDistance,
+      preferredTrainingLocations: [
+        'Customer Home',
+        'Apartment Society Gym',
+        'Public Park',
+      ],
       verificationStatus: VerificationStatus.underReview,
       idVerified: true,
       nextAvailableSlot: 'Pending Admin Verification',
@@ -94,7 +124,8 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
           certNumber: _certNumberCtrl.text.trim(),
           issueDate: _issueDateCtrl.text.trim(),
           expiryDate: _expiryDateCtrl.text.trim(),
-          documentUrl: 'https://fitpro.in/docs/cert_${_certNumberCtrl.text}.pdf',
+          documentUrl:
+              'https://homefit.demo/docs/cert_${_certNumberCtrl.text}.pdf',
           isVerified: false,
         ),
       ],
@@ -102,7 +133,8 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
         ServiceOffering(
           id: 'srv_new_1',
           title: _srvTitleCtrl.text.trim(),
-          description: 'Doorstep 1-on-1 personalized session customized to individual goals.',
+          description:
+              'Doorstep 1-on-1 personalized session customized to individual goals.',
           category: 'Functional Training',
           durationMinutes: _srvDuration,
           priceInr: double.tryParse(_srvPriceCtrl.text.trim()) ?? 1300.0,
@@ -122,9 +154,7 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
     final state = context.watch<AppState>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Trainer Application & Verification'),
-      ),
+      appBar: AppBar(title: const Text('Trainer Application & Verification')),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
@@ -182,8 +212,8 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
               color: isActive
                   ? AppColors.primary
                   : isDone
-                      ? AppColors.accent
-                      : AppColors.borderDark,
+                  ? AppColors.accent
+                  : AppColors.borderDark,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -208,7 +238,11 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
       children: [
         const Text(
           'Personal & Professional Details',
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(height: 6),
         const Text(
@@ -217,19 +251,40 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
         ),
         const SizedBox(height: 16),
 
-        const Text('Full Name', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+        const Text(
+          'Full Name',
+          style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary),
+        ),
         const SizedBox(height: 6),
-        TextField(controller: _nameCtrl, decoration: const InputDecoration(prefixIcon: Icon(Icons.person))),
+        TextField(
+          controller: _nameCtrl,
+          decoration: const InputDecoration(prefixIcon: Icon(Icons.person)),
+        ),
         const SizedBox(height: 14),
 
-        const Text('Professional Headline', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+        const Text(
+          'Professional Headline',
+          style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary),
+        ),
         const SizedBox(height: 6),
-        TextField(controller: _headlineCtrl, decoration: const InputDecoration(prefixIcon: Icon(Icons.badge))),
+        TextField(
+          controller: _headlineCtrl,
+          decoration: const InputDecoration(prefixIcon: Icon(Icons.badge)),
+        ),
         const SizedBox(height: 14),
 
-        const Text('Biography & Experience Summary', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+        const Text(
+          'Biography & Experience Summary',
+          style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary),
+        ),
         const SizedBox(height: 6),
-        TextField(controller: _bioCtrl, maxLines: 3, decoration: const InputDecoration(prefixIcon: Icon(Icons.description))),
+        TextField(
+          controller: _bioCtrl,
+          maxLines: 3,
+          decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.description),
+          ),
+        ),
         const SizedBox(height: 14),
 
         Row(
@@ -238,16 +293,31 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Base City', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+                  const Text(
+                    'Base City',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textDarkSecondary,
+                    ),
+                  ),
                   const SizedBox(height: 6),
                   DropdownButtonFormField<String>(
                     value: _selectedCity,
                     dropdownColor: AppColors.surfaceDark,
                     items: const [
-                      DropdownMenuItem(value: 'Bengaluru', child: Text('Bengaluru')),
+                      DropdownMenuItem(
+                        value: 'Gurugram',
+                        child: Text('Gurugram'),
+                      ),
                       DropdownMenuItem(value: 'Mumbai', child: Text('Mumbai')),
-                      DropdownMenuItem(value: 'Delhi NCR', child: Text('Delhi NCR')),
-                      DropdownMenuItem(value: 'Hyderabad', child: Text('Hyderabad')),
+                      DropdownMenuItem(
+                        value: 'Delhi NCR',
+                        child: Text('Delhi NCR'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'Hyderabad',
+                        child: Text('Hyderabad'),
+                      ),
                     ],
                     onChanged: (val) {
                       if (val != null) setState(() => _selectedCity = val);
@@ -261,7 +331,13 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Experience: $_experienceYears Years', style: const TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+                  Text(
+                    'Experience: $_experienceYears Years',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textDarkSecondary,
+                    ),
+                  ),
                   const SizedBox(height: 6),
                   Slider(
                     value: _experienceYears.toDouble(),
@@ -269,7 +345,8 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
                     max: 20,
                     divisions: 19,
                     activeColor: AppColors.primary,
-                    onChanged: (val) => setState(() => _experienceYears = val.toInt()),
+                    onChanged: (val) =>
+                        setState(() => _experienceYears = val.toInt()),
                   ),
                 ],
               ),
@@ -278,15 +355,27 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
         ),
         const SizedBox(height: 14),
 
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('Open to long-distance bookings'),
+          subtitle: const Text(
+            'Consider requests beyond your usual service area.',
+          ),
+          value: _longDistance,
+          onChanged: (value) => setState(() => _longDistance = value),
+        ),
         Text(
           'Maximum Doorstep Travel Radius: ${_travelRadiusKm.toInt()} km',
-          style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
         ),
         Slider(
           value: _travelRadiusKm,
           min: 3,
-          max: 20,
-          divisions: 17,
+          max: 100,
+          divisions: 97,
           activeColor: AppColors.accent,
           onChanged: (val) => setState(() => _travelRadiusKm = val),
         ),
@@ -310,7 +399,11 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
       children: [
         const Text(
           'Submit Qualifications & Certifications',
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(height: 6),
         const Text(
@@ -319,19 +412,37 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
         ),
         const SizedBox(height: 16),
 
-        const Text('Certification Name', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+        const Text(
+          'Certification Name',
+          style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary),
+        ),
         const SizedBox(height: 6),
-        TextField(controller: _certNameCtrl, decoration: const InputDecoration(prefixIcon: Icon(Icons.school))),
+        TextField(
+          controller: _certNameCtrl,
+          decoration: const InputDecoration(prefixIcon: Icon(Icons.school)),
+        ),
         const SizedBox(height: 14),
 
-        const Text('Issuing Body / Academy', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+        const Text(
+          'Issuing Body / Academy',
+          style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary),
+        ),
         const SizedBox(height: 6),
-        TextField(controller: _issuingOrgCtrl, decoration: const InputDecoration(prefixIcon: Icon(Icons.business))),
+        TextField(
+          controller: _issuingOrgCtrl,
+          decoration: const InputDecoration(prefixIcon: Icon(Icons.business)),
+        ),
         const SizedBox(height: 14),
 
-        const Text('Certificate Registration / License Number', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+        const Text(
+          'Certificate Registration / License Number',
+          style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary),
+        ),
         const SizedBox(height: 6),
-        TextField(controller: _certNumberCtrl, decoration: const InputDecoration(prefixIcon: Icon(Icons.pin))),
+        TextField(
+          controller: _certNumberCtrl,
+          decoration: const InputDecoration(prefixIcon: Icon(Icons.pin)),
+        ),
         const SizedBox(height: 14),
 
         Row(
@@ -340,9 +451,20 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Issue Date', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+                  const Text(
+                    'Issue Date',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textDarkSecondary,
+                    ),
+                  ),
                   const SizedBox(height: 6),
-                  TextField(controller: _issueDateCtrl, decoration: const InputDecoration(prefixIcon: Icon(Icons.calendar_today))),
+                  TextField(
+                    controller: _issueDateCtrl,
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.calendar_today),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -351,9 +473,20 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Expiry Date', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+                  const Text(
+                    'Expiry Date',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textDarkSecondary,
+                    ),
+                  ),
                   const SizedBox(height: 6),
-                  TextField(controller: _expiryDateCtrl, decoration: const InputDecoration(prefixIcon: Icon(Icons.event))),
+                  TextField(
+                    controller: _expiryDateCtrl,
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.event),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -367,7 +500,7 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
           decoration: BoxDecoration(
             color: AppColors.surfaceDarkCard,
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: AppColors.primary.withOpacity(0.4)),
+            border: Border.all(color: AppColors.primary.withValues(alpha: 0.4)),
           ),
           child: Row(
             children: [
@@ -377,15 +510,30 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Certificate_Proof_ACSM.pdf', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Colors.white)),
-                    Text('Uploaded (2.4 MB) • 256-Bit Encrypted Storage', style: TextStyle(fontSize: 11, color: AppColors.textDarkMuted)),
+                    Text(
+                      'Certificate_Proof_ACSM.pdf',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 13,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      'Uploaded (2.4 MB) • 256-Bit Encrypted Storage',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: AppColors.textDarkMuted,
+                      ),
+                    ),
                   ],
                 ),
               ),
               TextButton(
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Document re-uploaded successfully.')),
+                    const SnackBar(
+                      content: Text('Document re-uploaded successfully.'),
+                    ),
                   );
                 },
                 child: const Text('Replace'),
@@ -398,8 +546,14 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            OutlinedButton(onPressed: () => setState(() => _currentStep = 0), child: const Text('Back')),
-            ElevatedButton(onPressed: () => setState(() => _currentStep = 2), child: const Text('Next: Identity Check')),
+            OutlinedButton(
+              onPressed: () => setState(() => _currentStep = 0),
+              child: const Text('Back'),
+            ),
+            ElevatedButton(
+              onPressed: () => setState(() => _currentStep = 2),
+              child: const Text('Next: Identity Check'),
+            ),
           ],
         ),
       ],
@@ -413,7 +567,11 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
       children: [
         const Text(
           'Identity & Background Verification',
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(height: 6),
         const Text(
@@ -422,9 +580,17 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
         ),
         const SizedBox(height: 16),
 
-        const Text('Government ID / Aadhaar Number (Masked)', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+        const Text(
+          'Government ID / Aadhaar Number (Masked)',
+          style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary),
+        ),
         const SizedBox(height: 6),
-        TextField(controller: _aadhaarCtrl, decoration: const InputDecoration(prefixIcon: Icon(Icons.credit_card))),
+        TextField(
+          controller: _aadhaarCtrl,
+          decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.credit_card),
+          ),
+        ),
         const SizedBox(height: 16),
 
         Container(
@@ -440,7 +606,10 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
               const Expanded(
                 child: Text(
                   'Your private identification is stored in encrypted vault storage and is never exposed to customers or unprivileged agents.',
-                  style: TextStyle(fontSize: 11, color: AppColors.textDarkSecondary),
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: AppColors.textDarkSecondary,
+                  ),
                 ),
               ),
             ],
@@ -463,8 +632,14 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            OutlinedButton(onPressed: () => setState(() => _currentStep = 1), child: const Text('Back')),
-            ElevatedButton(onPressed: () => setState(() => _currentStep = 3), child: const Text('Next: Services & Rates')),
+            OutlinedButton(
+              onPressed: () => setState(() => _currentStep = 1),
+              child: const Text('Back'),
+            ),
+            ElevatedButton(
+              onPressed: () => setState(() => _currentStep = 3),
+              child: const Text('Next: Services & Rates'),
+            ),
           ],
         ),
       ],
@@ -478,7 +653,11 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
       children: [
         const Text(
           'Set Your Services & Session Rates',
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(height: 6),
         const Text(
@@ -487,9 +666,17 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
         ),
         const SizedBox(height: 16),
 
-        const Text('Primary Service Title', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+        const Text(
+          'Primary Service Title',
+          style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary),
+        ),
         const SizedBox(height: 6),
-        TextField(controller: _srvTitleCtrl, decoration: const InputDecoration(prefixIcon: Icon(Icons.fitness_center))),
+        TextField(
+          controller: _srvTitleCtrl,
+          decoration: const InputDecoration(
+            prefixIcon: Icon(Icons.fitness_center),
+          ),
+        ),
         const SizedBox(height: 14),
 
         Row(
@@ -498,9 +685,21 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Price per Session (₹)', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+                  const Text(
+                    'Price per Session (₹)',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textDarkSecondary,
+                    ),
+                  ),
                   const SizedBox(height: 6),
-                  TextField(controller: _srvPriceCtrl, keyboardType: TextInputType.number, decoration: const InputDecoration(prefixIcon: Icon(Icons.currency_rupee))),
+                  TextField(
+                    controller: _srvPriceCtrl,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.currency_rupee),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -509,7 +708,13 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Duration', style: TextStyle(fontSize: 12, color: AppColors.textDarkSecondary)),
+                  const Text(
+                    'Duration',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textDarkSecondary,
+                    ),
+                  ),
                   const SizedBox(height: 6),
                   DropdownButtonFormField<int>(
                     value: _srvDuration,
@@ -532,7 +737,10 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
 
         Text(
           'Doorstep Travel Surcharge: ${Formatters.formatINR(_travelSurcharge)}',
-          style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+          ),
         ),
         Slider(
           value: _travelSurcharge,
@@ -547,8 +755,14 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            OutlinedButton(onPressed: () => setState(() => _currentStep = 2), child: const Text('Back')),
-            ElevatedButton(onPressed: () => setState(() => _currentStep = 4), child: const Text('Next: Final Review')),
+            OutlinedButton(
+              onPressed: () => setState(() => _currentStep = 2),
+              child: const Text('Back'),
+            ),
+            ElevatedButton(
+              onPressed: () => setState(() => _currentStep = 4),
+              child: const Text('Next: Final Review'),
+            ),
           ],
         ),
       ],
@@ -566,7 +780,11 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
       children: [
         const Text(
           'Review & Submit for Admin Verification',
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(height: 14),
 
@@ -581,11 +799,24 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
             children: [
               _summaryItem('Applicant Name', _nameCtrl.text),
               _summaryItem('Headline', _headlineCtrl.text),
-              _summaryItem('City & Radius', '$_selectedCity (Up to ${_travelRadiusKm.toInt()} km)'),
-              _summaryItem('Certification', '${_certNameCtrl.text} (${_issuingOrgCtrl.text})'),
-              _summaryItem('Service Price', '${Formatters.formatINR(price)} / session'),
+              _summaryItem(
+                'City & Radius',
+                '$_selectedCity (Up to ${_travelRadiusKm.toInt()} km)',
+              ),
+              _summaryItem(
+                'Certification',
+                '${_certNameCtrl.text} (${_issuingOrgCtrl.text})',
+              ),
+              _summaryItem(
+                'Service Price',
+                '${Formatters.formatINR(price)} / session',
+              ),
               const Divider(height: 20),
-              _summaryItem('Your Net Payout (est.)', '${Formatters.formatINR(trainerEarnings)} per session (Keep ${(100 - commissionPercent).toInt()}%)', isAccent: true),
+              _summaryItem(
+                'Your Net Payout (est.)',
+                '${Formatters.formatINR(trainerEarnings)} per session (Keep ${(100 - commissionPercent).toInt()}%)',
+                isAccent: true,
+              ),
             ],
           ),
         ),
@@ -595,7 +826,7 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
           value: _termsAccepted,
           onChanged: (val) => setState(() => _termsAccepted = val ?? true),
           title: const Text(
-            'I agree to FitPro India Independent Trainer Marketplace Terms, safety protocols, and weekly automated settlement schedule.',
+            'I agree to HOMEFIT Independent Trainer Marketplace Terms, safety protocols, and weekly automated settlement schedule.',
             style: TextStyle(fontSize: 11, color: Colors.white),
           ),
           controlAffinity: ListTileControlAffinity.leading,
@@ -606,12 +837,19 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            OutlinedButton(onPressed: () => setState(() => _currentStep = 3), child: const Text('Back')),
+            OutlinedButton(
+              onPressed: () => setState(() => _currentStep = 3),
+              child: const Text('Back'),
+            ),
             ElevatedButton.icon(
-              onPressed: _termsAccepted ? () => _submitApplication(state) : null,
+              onPressed: _termsAccepted
+                  ? () => _submitApplication(state)
+                  : null,
               icon: const Icon(Icons.send, size: 16),
               label: const Text('Submit Application'),
-              style: ElevatedButton.styleFrom(backgroundColor: AppColors.accent),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.accent,
+              ),
             ),
           ],
         ),
@@ -625,7 +863,13 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: const TextStyle(fontSize: 12, color: AppColors.textDarkMuted)),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              color: AppColors.textDarkMuted,
+            ),
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
@@ -646,11 +890,19 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
   Widget _buildSuccessSubmittedView(BuildContext context, AppState state) {
     return Column(
       children: [
-        const Icon(Icons.mark_email_read_outlined, size: 64, color: AppColors.accent),
+        const Icon(
+          Icons.mark_email_read_outlined,
+          size: 64,
+          color: AppColors.accent,
+        ),
         const SizedBox(height: 16),
         const Text(
           'Application Submitted for Review!',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
         const SizedBox(height: 8),
         const Text(
@@ -663,9 +915,9 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: AppColors.primary.withOpacity(0.3)),
+            border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
           ),
           child: const Row(
             children: [
@@ -694,4 +946,3 @@ class _TrainerOnboardingViewState extends State<TrainerOnboardingView> {
     );
   }
 }
-

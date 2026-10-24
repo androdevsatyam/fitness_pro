@@ -17,4 +17,3 @@ class MessageModel {
     this.bookingId,
   });
 }
-
